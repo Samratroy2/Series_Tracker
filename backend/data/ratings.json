@@ -1,0 +1,12 @@
+[
+  {
+    "userId": "user1",
+    "showId": "show1",
+    "rating": 9
+  },
+  {
+    "userId": "user2",
+    "showId": "show2",
+    "rating": 10
+  }
+]

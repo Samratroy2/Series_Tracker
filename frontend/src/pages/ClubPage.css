@@ -1,0 +1,367 @@
+/* Base Styles (Mobile First) */
+.club-wrapper {
+  display: flex;
+  flex-direction: column; /* stacked for mobile */
+  height: 100vh;
+  overflow: hidden;
+  background-color: #ece5dd;
+  color: #000;
+  padding-left: 35px; /* consistent left padding */
+}
+
+/* Sidebar */
+.club-sidebar {
+  width: 100%;
+  background-color: #f0f2f5;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+}
+
+/* Sidebar Title */
+.club-sidebar h3 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Create Club Section */
+.create-club {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.create-club input {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: #fff;
+  color: #000;
+}
+
+.create-club button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: #128c7e;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.create-club button:hover {
+  background-color: #075e54;
+}
+
+/* Club List Items */
+.club-item {
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 5px;
+  background-color: transparent;
+}
+
+.club-item.selected {
+  background-color: #128c7e;
+  color: #fff;
+}
+
+.club-item:hover {
+  background-color: #e6e6e6;
+}
+
+/* Main Chat Area */
+.club-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  margin-left: 35px; /* consistent left spacing */
+}
+
+.club-header {
+  background-color: #075e54;
+  color: #fff;
+  padding: 12px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Messages */
+.messages {
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  background-color: #e5ddd5;
+}
+
+.message {
+  max-width: 100%;
+  padding: 8px 10px;
+  border-radius: 18px;
+  word-wrap: break-word;
+}
+
+.message.own {
+  background-color: #dcf8c6;
+  align-self: flex-end;
+}
+
+.message.other {
+  background-color: white;
+  align-self: flex-start;
+}
+
+/* Message Header (User + Time) */
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.message-header .time {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* Send Message Section */
+.send-message {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background-color: #f0f2f5;
+}
+
+.send-message input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #000;
+}
+
+.send-message button {
+  margin-left: 8px;
+  padding: 10px 14px;
+  border-radius: 50%;
+  border: none;
+  background-color: #128c7e;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.send-message button:hover {
+  background-color: #075e54;
+}
+
+.send-message .poll-button {
+  background-color: #ff9800;
+}
+
+.send-message .poll-button:hover {
+  background-color: #e68900;
+}
+
+/* Polls */
+.poll {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 6px 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.poll-question {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.poll-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  margin: 4px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  transition: background 0.2s;
+}
+
+.poll-option:hover {
+  background-color: #e6f7ff;
+}
+
+.poll-option.voted {
+  background-color: #d1e7dd;
+}
+
+.poll-option button {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: none;
+  background-color: #128c7e;
+  color: white;
+  cursor: pointer;
+}
+
+.poll-option button:hover {
+  background-color: #075e54;
+}
+
+/* Poll Creation Inputs */
+.poll-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  background-color: #f0f2f5;
+  border-top: 1px solid #ccc;
+}
+
+.poll-inputs input {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #000;
+}
+
+.poll-inputs button {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: none;
+  background-color: #128c7e;
+  color: white;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.poll-inputs button:hover {
+  background-color: #075e54;
+}
+
+/* Media Queries */
+@media screen and (min-width: 768px) {
+  .club-wrapper {
+    flex-direction: row;
+  }
+  .club-sidebar {
+    width: 250px;
+  }
+  .club-main {
+    margin-left: 35px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .club-sidebar {
+    width: 300px;
+  }
+  .club-main {
+    margin-left: 35px;
+  }
+}
+
+/* Dark Mode */
+.dark .club-wrapper {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.dark .club-sidebar {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+.dark .club-item.selected {
+  background-color: #00a884;
+  color: #fff;
+}
+
+.dark .club-main {
+  background-color: #121212;
+}
+
+.dark .messages {
+  background-color: #1e1e1e;
+}
+
+.dark .message.own {
+  background-color: #056162;
+  color: #fff;
+}
+
+.dark .message.other {
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+.dark .send-message {
+  background-color: #1e1e1e;
+}
+
+.dark .send-message input {
+  background-color: #2a2a2a;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+.dark .send-message button {
+  background-color: #00a884;
+}
+
+.dark .send-message button:hover {
+  background-color: #056162;
+}
+
+.dark .poll {
+  background-color: #2a2a2a;
+}
+
+.dark .poll-option {
+  border: 1px solid #555;
+}
+
+.dark .poll-option.voted {
+  background-color: #056162;
+}
+
+.dark .poll-option button {
+  background-color: #00a884;
+}
+
+.dark .poll-option button:hover {
+  background-color: #056162;
+}
+
+.dark .poll-inputs {
+  background-color: #1e1e1e;
+}
+
+.dark .poll-inputs input {
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+.dark .poll-inputs button {
+  background-color: #00a884;
+}
+
+.dark .poll-inputs button:hover {
+  background-color: #056162;
+}

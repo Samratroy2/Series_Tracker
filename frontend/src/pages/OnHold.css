@@ -1,0 +1,116 @@
+.onhold-container {
+  padding: 1rem;
+}
+
+.onhold-container h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0%;
+  margin-bottom: 1rem;
+  margin-top: 1.3rem;
+}
+
+.remove-all-btn {
+  margin-bottom: 1rem;
+  padding: 8px 16px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease;
+}
+
+.remove-all-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Horizontal scrollable list */
+.onhold-list {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.onhold-list::-webkit-scrollbar {
+  height: 6px;
+}
+
+.onhold-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.3);
+  border-radius: 3px;
+}
+
+/* Card Style */
+.onhold-card {
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 0.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.onhold-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.onhold-card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.onhold-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.onhold-card-info h4 {
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 600;
+  text-align: center;
+}
+
+.onhold-card-info p {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 0;
+}
+
+.onhold-card-info button {
+  margin-top: 0.5rem;
+  padding: 5px 10px;
+  background-color: #cc0000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s ease;
+}
+
+.onhold-card-info button:hover {
+  background-color: #990000;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .onhold-card {
+    flex: 0 0 150px;
+  }
+
+  .onhold-card img {
+    height: 200px;
+  }
+}

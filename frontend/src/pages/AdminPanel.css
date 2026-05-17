@@ -1,0 +1,54 @@
+/*frontend\src\pages\AdminPanel.css*/
+.admin-container {
+    margin-left: 65px;
+    margin-right: 65px;
+    padding: 2rem;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .admin-container.light {
+    background-color: #f9f9f9;
+    color: #222;
+  }
+  
+  .admin-container.dark {
+    background-color: #121212;
+    color: #eee;
+  }
+  
+  .admin-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+  
+  .admin-item {
+    background: rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+  }
+  
+  .admin-container.dark .admin-item {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .admin-item button {
+    background: #ff4d4d;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .admin-item button:hover {
+    background: #ff1a1a;
+    color: black
+  }
+  

@@ -1,0 +1,108 @@
+/* ===================== Filter Card ===================== */
+.filter-card {
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* ===================== Header ===================== */
+.filter-header {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f7f7f7;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.filter-header:hover {
+  background: #ececec;
+}
+
+/* ===================== Options Wrapper ===================== */
+.filter-options-wrapper {
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+/* ===================== Options Grid ===================== */
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem 1rem;
+}
+
+/* ===================== Flipkart-style Pill Buttons ===================== */
+.filter-pill {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  background: #f0f0f0;
+  color: #555;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+.filter-pill:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.filter-pill.active {
+  background: #0074d9;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.pill-close {
+  margin-left: 0.4rem;
+  cursor: pointer;
+  stroke: #fff;
+  transition: transform 0.2s ease;
+}
+
+.pill-close:hover {
+  transform: scale(1.2);
+}
+
+/* ===================== Active Filter Chips ===================== */
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ===================== Responsive Adjustments ===================== */
+@media (max-width: 1024px) {
+  .filter-options {
+    gap: 0.4rem;
+    padding: 0.6rem 0.8rem 0.8rem;
+  }
+
+  .filter-pill {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-card {
+    border-radius: 12px 12px 0 0;
+    margin-bottom: 0.5rem;
+  }
+}

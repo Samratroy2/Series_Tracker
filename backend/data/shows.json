@@ -1,0 +1,16 @@
+[
+  {
+    "id": "show1",
+    "title": "Attack on Titan",
+    "totalEpisodes": 25,
+    "watchedEpisodes": 5,
+    "genre": "Action"
+  },
+  {
+    "id": "show2",
+    "title": "One Piece",
+    "totalEpisodes": 1000,
+    "watchedEpisodes": 800,
+    "genre": "Adventure"
+  }
+]

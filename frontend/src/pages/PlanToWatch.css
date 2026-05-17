@@ -1,0 +1,153 @@
+/* Container */
+.plan-container {
+  padding: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.plan-container h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0%;
+  margin-bottom: 1rem;
+  margin-top: 1.2rem;
+}
+
+/* Remove All Button */
+.remove-all-btn {
+  margin-bottom: 1rem;
+  padding: 8px 16px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.remove-all-btn:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+/* Plan List Grid */
+.plan-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Plan Card */
+.plan-card {
+  width: 180px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* Anime Image */
+.plan-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+/* Card Info */
+.plan-card-info {
+  font-size: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  gap: 0.3rem;
+}
+
+.plan-card-info h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
+.plan-card-info p {
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Buttons */
+.plan-card-buttons {
+  display: flex;
+  gap: 5px;
+  margin-top: 0.5rem;
+}
+
+.plan-card-buttons button {
+  flex: 1;
+  padding: 5px 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s ease;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.move-btn {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.move-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+}
+
+.remove-btn {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.remove-btn:hover {
+  background-color: #c0392b;
+  transform: translateY(-1px);
+}
+
+/* Responsive for mobile */
+@media screen and (max-width: 600px) {
+  .plan-card {
+    width: 140px;
+  }
+
+  .plan-card img {
+    height: 180px;
+  }
+
+  .plan-card-info h4 {
+    font-size: 0.9rem;
+  }
+
+  .plan-card-info p {
+    font-size: 0.8rem;
+  }
+
+  .plan-card-buttons button {
+    font-size: 0.75rem;
+    padding: 4px 6px;
+    width: 100%;
+  }
+}
+
+.plan-card-buttons{
+  display: block;
+}

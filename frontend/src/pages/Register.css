@@ -1,0 +1,128 @@
+/* Wrapper handles dark/light theme and layout */
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  transition: background 0.3s ease;
+  background-color: #ffffff;
+}
+
+.auth-wrapper.dark {
+  background-color: #1e1e2f;
+}
+
+/* Main container with blur & modern feel */
+.auth-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 2.5rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(255, 140, 0, 0.35);
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  text-align: center;
+  animation: fadeIn 0.4s ease-in-out;
+  transition: background-color 0.3s ease;
+}
+
+.auth-wrapper.dark .auth-container {
+  background-color: rgba(30, 30, 47, 0.85);
+  color: #f5f5f5;
+}
+
+/* Heading */
+.auth-container h2 {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Input fields */
+.auth-container input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  background-color: #f3f3f3;
+  transition: box-shadow 0.3s ease;
+  color: #333;
+}
+
+.auth-container input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.3);
+}
+
+.auth-wrapper.dark input {
+  background-color: #2e2e44;
+  color: #f0f0f0;
+}
+
+/* Button */
+.auth-container button {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  background-color: #ff9800;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.auth-container button:hover {
+  background-color: #fb8c00;
+}
+
+/* Error message */
+.error-text {
+  color: #d32f2f;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+/* Link text */
+.auth-container p {
+  margin-top: 1.2rem;
+  font-size: 0.95rem;
+}
+
+.auth-container a {
+  color: #ff9800;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 2rem 1.2rem;
+  }
+
+  .auth-container h2 {
+    font-size: 1.6rem;
+  }
+}

@@ -1,0 +1,516 @@
+[
+  {
+    "mal_id": 1,
+    "title": "Attack on Titan",
+    "type": "Anime",
+    "score": 9.1,
+    "episodes": 75,
+    "synopsis": "After his hometown is destroyed...",
+    "genre": "Action",
+    "language": "Japanese",
+    "year": 2013,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/10/47347.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 2,
+    "title": "Death Note",
+    "type": "Anime",
+    "score": 8.7,
+    "episodes": 37,
+    "synopsis": "A high school student discovers a notebook...",
+    "genre": "Superhero",
+    "language": "Japanese",
+    "year": 2006,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/9/9453.jpg"
+      }
+    }
+  },
+
+  {
+    "mal_id": 3,
+    "title": "Fullmetal Alchemist: Brotherhood",
+    "type": "Anime",
+    "score": 9.2,
+    "episodes": 64,
+    "synopsis": "Two brothers search for the Philosopher's Stone after a failed attempt to revive their mother.",
+    "genre": "Adventure",
+    "language": "Japanese",
+    "year": 2009,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/1223/96541.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 4,
+    "title": "One Punch Man",
+    "type": "Anime",
+    "score": 8.5,
+    "episodes": 24,
+    "synopsis": "A superhero who can defeat any opponent with one punch seeks a real challenge.",
+    "genre": "Comedy",
+    "language": "Japanese",
+    "year": 2015,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/12/76049.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 5,
+    "title": "Demon Slayer",
+    "type": "Anime",
+    "score": 8.6,
+    "episodes": 26,
+    "synopsis": "A young boy joins the Demon Slayer Corps to avenge his family and cure his sister.",
+    "genre": "Action",
+    "language": "Japanese",
+    "year": 2019,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/1286/99889.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 6,
+    "title": "Tokyo Ghoul",
+    "type": "Anime",
+    "score": 7.9,
+    "episodes": 24,
+    "synopsis": "After a fateful encounter, a young man becomes half-ghoul and struggles with his new identity.",
+    "genre": "Horror",
+    "language": "Japanese",
+    "year": 2014,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/5/64449.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 7,
+    "title": "My Hero Academia",
+    "type": "Anime",
+    "score": 8.3,
+    "episodes": 88,
+    "synopsis": "A powerless boy enrolls in a school for heroes after gaining the power of All Might.",
+    "genre": "Superhero",
+    "language": "Japanese",
+    "year": 2016,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/10/78745.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 8,
+    "title": "Jujutsu Kaisen",
+    "type": "Anime",
+    "score": 8.8,
+    "episodes": 24,
+    "synopsis": "A high school student swallows a cursed object and joins a secret sorcerer society.",
+    "genre": "Dark Fantasy",
+    "language": "Japanese",
+    "year": 2020,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/1171/109222.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 9,
+    "title": "Naruto",
+    "type": "Anime",
+    "score": 7.9,
+    "episodes": 220,
+    "synopsis": "A young ninja seeks recognition from his peers and dreams of becoming the Hokage.",
+    "genre": "Adventure",
+    "language": "Japanese",
+    "year": 2002,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/13/17405.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 10,
+    "title": "Bleach",
+    "type": "Anime",
+    "score": 7.8,
+    "episodes": 366,
+    "synopsis": "A teenager gains the powers of a Soul Reaper and fights evil spirits.",
+    "genre": "Action",
+    "language": "Japanese",
+    "year": 2004,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/3/40451.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 11,
+    "title": "Code Geass",
+    "type": "Anime",
+    "score": 8.7,
+    "episodes": 50,
+    "synopsis": "A banished prince gains the power of Geass and seeks to overthrow a tyrannical empire.",
+    "genre": "Mecha",
+    "language": "Japanese",
+    "year": 2006,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/4/9391.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 12,
+    "title": "Steins;Gate",
+    "type": "Anime",
+    "score": 9.0,
+    "episodes": 24,
+    "synopsis": "A self-proclaimed mad scientist discovers time travel and faces tragic consequences.",
+    "genre": "Sci-Fi",
+    "language": "Japanese",
+    "year": 2011,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/5/73199.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 13,
+    "title": "Your Lie in April",
+    "type": "Anime",
+    "score": 8.7,
+    "episodes": 22,
+    "synopsis": "A piano prodigy rediscovers his love for music through a spirited violinist.",
+    "genre": "Drama",
+    "language": "Japanese",
+    "year": 2014,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/3/67177.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 14,
+    "title": "Erased",
+    "type": "Anime",
+    "score": 8.4,
+    "episodes": 12,
+    "synopsis": "A man is sent back in time to prevent a tragic series of events from his childhood.",
+    "genre": "Thriller",
+    "language": "Japanese",
+    "year": 2016,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/10/77957.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 15,
+    "title": "Sword Art Online",
+    "type": "Anime",
+    "score": 7.6,
+    "episodes": 25,
+    "synopsis": "Players are trapped in a virtual reality MMORPG where dying in-game means dying in real life.",
+    "genre": "Sci-Fi",
+    "language": "Japanese",
+    "year": 2012,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/11/39717.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 16,
+    "title": "One Piece",
+    "type": "Anime",
+    "score": 8.9,
+    "episodes": 1000,
+    "synopsis": "A pirate sets out to become King of the Pirates by finding the legendary treasure, One Piece.",
+    "genre": "Adventure",
+    "language": "Japanese",
+    "year": 1999,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/6/73245.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 17,
+    "title": "Vinland Saga",
+    "type": "Anime",
+    "score": 8.8,
+    "episodes": 24,
+    "synopsis": "A young warrior seeks revenge for his father's death in Viking-era Europe.",
+    "genre": "Historical",
+    "language": "Japanese",
+    "year": 2019,
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/1500/103005.jpg"
+      }
+    }
+  },
+
+  {
+    "mal_id": 101,
+    "title": "Sacred Games",
+    "type": "Serial",
+    "score": 8.6,
+    "episodes": 16,
+    "synopsis": "A troubled police officer uncovers a criminal underworld and a looming apocalypse in Mumbai.",
+    "genre": "Crime",
+    "language": "Hindi",
+    "year": 2018,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQn5iQVUMmCBKWoRRAjY4qORrvL2SgxW8dSESz9BuRTIuB0L8AGgw1SkXNEGRxc6upBTSRpPA"
+      }
+    }
+  },
+  {
+    "mal_id": 102,
+    "title": "Mirzapur",
+    "type": "Serial",
+    "score": 8.5,
+    "episodes": 19,
+    "synopsis": "In the lawless city of Mirzapur, power struggles and vengeance define the lives of gangsters and innocents alike.",
+    "genre": "Action",
+    "language": "Hindi",
+    "year": 2018,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRhqFk8nITteea0sobPZkX2gKuZOxYd0m4wwnJk-AdPQX39fiO90-UesKhYtriNWihHtfg1"
+      }
+    }
+  },
+  {
+    "mal_id": 103,
+    "title": "Paatal Lok",
+    "type": "Serial",
+    "score": 8.1,
+    "episodes": 9,
+    "synopsis": "A cynical cop lands a high-profile case which leads him to the underworld of the criminal justice system.",
+    "genre": "Thriller",
+    "language": "Hindi",
+    "year": 2020,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRF2shMJSElfV8kHsL9Bpp6T1QHzh5fM8fX0AQWFkfLthhi5MbRkkhQdapm_e18QaVg29wh"
+      }
+    }
+  },
+  {
+    "mal_id": 104,
+    "title": "Asur",
+    "type": "Serial",
+    "score": 8.4,
+    "episodes": 16,
+    "synopsis": "A CBI forensic expert battles a brutal serial killer with religious and mythological motivations.",
+    "genre": "Mystery",
+    "language": "Hindi",
+    "year": 2020,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSqypXn6h6fVU5NYonrYrZHrKfGTHyjrawOz9eGDNBBRYhTn-XsNLLGkCbuioO1TtreCN63Xw"
+      }
+    }
+  },
+  {
+    "mal_id": 105,
+    "title": "The Family Man",
+    "type": "Serial",
+    "score": 8.7,
+    "episodes": 19,
+    "synopsis": "A middle-class man secretly works as an intelligence officer for the T.A.S.C. to fight terrorism.",
+    "genre": "Action",
+    "language": "Hindi",
+    "year": 2019,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRozXRE4oMmMybGPC4WQkMHMmU8j0Qsg9HYJQCozi1Cg3Mha7j5oI-TliQhDeQR460I3ih87Q"
+      }
+    }
+  },
+  {
+    "mal_id": 106,
+    "title": "Breathe",
+    "type": "Serial",
+    "score": 7.8,
+    "episodes": 20,
+    "synopsis": "A father goes to extreme lengths to save his dying son in a world of crime and psychological conflict.",
+    "genre": "Psychological Thriller",
+    "language": "Hindi",
+    "year": 2018,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTAaPPIKqVy6mUINud80dmHztyAkm0LZhd5CEkT-yjX7293qJYaZOb1pU052O4AtekGusSW"
+      }
+    }
+  },
+  {
+    "mal_id": 107,
+    "title": "Scam 1992",
+    "type": "Serial",
+    "score": 9.3,
+    "episodes": 10,
+    "synopsis": "The rise and fall of stockbroker Harshad Mehta, who was involved in the biggest financial scam of India.",
+    "genre": "Biography",
+    "language": "Hindi",
+    "year": 2020,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRPT4dbNPCbzIbsIJVwhEbnLEN0fYUx_mdE55GU_zhaDL1xfQ8d"
+      }
+    }
+  },
+  {
+    "mal_id": 108,
+    "title": "Made in Heaven",
+    "type": "Serial",
+    "score": 8.3,
+    "episodes": 9,
+    "synopsis": "Two wedding planners in Delhi navigate complex social norms, class struggles, and personal drama.",
+    "genre": "Drama",
+    "language": "Hindi",
+    "year": 2019,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTGODG0UGkfoy1ySo4xgrO5qCsC9x9-iRBa75XCmo6Aa7m5rBc4-HcFS95KtQJTKmmt_GmW"
+      }
+    }
+  },
+  {
+    "mal_id": 109,
+    "title": "Delhi Crime",
+    "type": "Serial",
+    "score": 8.5,
+    "episodes": 14,
+    "synopsis": "Based on the 2012 Delhi gang rape case, this series follows the intense police investigation.",
+    "genre": "Crime",
+    "language": "Hindi",
+    "year": 2019,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZOZOFr5xvg2u44zNQRJZLEUI8tt8FwkHZSt5DVWrOjwYJQNEu1Uvw4p2c9P_i1u8_NH8FeQ"
+      }
+    }
+  },
+  {
+    "mal_id": 110,
+    "title": "Kota Factory",
+    "type": "Serial",
+    "score": 9.0,
+    "episodes": 10,
+    "synopsis": "A realistic drama about students preparing for engineering exams in Kota, India.",
+    "genre": "Slice of Life",
+    "language": "Hindi",
+    "year": 2019,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJXD7sqfPsi7obllbMe6q3D4hjZ-Jl_mKiug&s"
+      }
+    }
+  },
+  {
+    "mal_id": 111,
+    "title": "Rocket Boys",
+    "type": "Serial",
+    "score": 8.9,
+    "episodes": 16,
+    "synopsis": "A dramatized retelling of India’s space and nuclear program pioneers — Homi Bhabha and Vikram Sarabhai.",
+    "genre": "Historical",
+    "language": "Hindi",
+    "year": 2022,
+    "images": {
+      "jpg": {
+        "image_url": "https://resizing.flixster.com/unMKKQ0xU-Pd_y-qx-rvjFlAlYw=/ems.cHJkLWVtcy1hc3NldHMvdHZzZXJpZXMvMGE3YTNjNjAtYWQ2Mi00NmI5LWEzZDctYzBmZGVjYjExMWRhLmpwZw=="
+      }
+    }
+  },
+  {
+    "mal_id": 112,
+    "title": "TVF Pitchers",
+    "type": "Serial",
+    "score": 8.5,
+    "episodes": 11,
+    "synopsis": "A group of friends quits their jobs to launch a startup, navigating struggles and ambitions.",
+    "genre": "Drama",
+    "language": "Hindi",
+    "year": 2015,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW_iZ2iL2TYTnMyEIYh5U1J4tXXPy3SQTVcg&s"
+      }
+    }
+  },
+  {
+    "mal_id": 113,
+    "title": "Aarya",
+    "type": "Serial",
+    "score": 8.0,
+    "episodes": 17,
+    "synopsis": "Aarya, a woman dragged into the narcotics world, must protect her family at all costs.",
+    "genre": "Crime",
+    "language": "Hindi",
+    "year": 2020,
+    "images": {
+      "jpg": {
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/e/ed/Aarya_poster.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 114,
+    "title": "Taj: Divided by Blood",
+    "type": "Serial",
+    "score": 7.5,
+    "episodes": 10,
+    "synopsis": "A historical drama exploring the power struggle between Akbar’s sons for the Mughal throne.",
+    "genre": "Historical",
+    "language": "Hindi",
+    "year": 2023,
+    "images": {
+      "jpg": {
+        "image_url": "https://assets.gadgets360cdn.com/pricee/assets/product/202305/Taj_s2_poster_1_1684307533.jpg"
+      }
+    }
+  },
+  {
+    "mal_id": 115,
+    "title": "Rana Naidu",
+    "type": "Serial",
+    "score": 7.2,
+    "episodes": 10,
+    "synopsis": "The Indian adaptation of 'Ray Donovan', about a fixer who cleans up messy celebrity problems.",
+    "genre": "Drama",
+    "language": "Hindi",
+    "year": 2023,
+    "images": {
+      "jpg": {
+        "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrb7iJ_cuxDVCdlmvNZnRyEKNTSXbWszv3Aw&s"
+      }
+    }
+  }
+]
