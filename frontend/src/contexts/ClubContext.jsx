@@ -15,7 +15,7 @@ export const ClubProvider = ({ children }) => {
 
   const fetchClubs = async () => {
     try {
-      const res = await axios.get('process.env.REACT_APP_API_URL/api/clubs');
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/clubs`);
       setClubs(res.data || []);
     } catch (err) {
       console.error('Failed to fetch clubs:', err);
