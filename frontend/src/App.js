@@ -7,7 +7,7 @@ import Sidebar from './components/Sidebar';
 import { ThemeProvider, useTheme } from './ThemeContext';
 import { ClubProvider } from './contexts/ClubContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-
+import PrivateRoute from './components/PrivateRoute';
 import ForgotPassword from './pages/ForgotPassword';
 import VerifyOtp from './pages/VerifyOtp';
 import ResetPassword from './pages/ResetPassword';
@@ -44,7 +44,7 @@ const AppLayout = () => {
     document.body.classList.toggle('dark-theme', darkMode);
   }, [darkMode]);
 
-  if (loading) return <div className="loading-screen">Loading...</div>;
+  if (loading) {return (<div className="loading-screen">Loading...</div>);}
 
   const isAuthenticated = !!user;
 
@@ -71,7 +71,14 @@ const AppLayout = () => {
           <Route path="/filter" element={<FilterPage />} />
 
           {/* Protected routes */}
-          <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
+              </PrivateRoute>
+            }
+          />
           <Route path="/anime/:id" element={isAuthenticated ? <AnimeDetails /> : <Navigate to="/login" />} />
           <Route path="/watchlist" element={isAuthenticated ? <Watchlist /> : <Navigate to="/login" />} />
           <Route path="/watchlist/watching" element={isAuthenticated ? <Watching /> : <Navigate to="/login" />} />

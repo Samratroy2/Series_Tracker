@@ -1,5 +1,4 @@
 // src/pages/Register.js
-// src/pages/Register.js
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTheme } from '../ThemeContext';
@@ -16,48 +15,35 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const API_URL = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setLoading(true);
 
     try {
-      const result = await signup(name, email, password);
+      const result = await signup(
+        name,
+        email,
+        password
+      );
 
       if (!result.success) {
-        // Show toast error if signup fails (e.g., email already used)
-        toast.error(result.message || 'Registration failed', {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.error(
+          result.message || 'Registration failed'
+        );
         return;
       }
 
-      // Success toast
-      toast.success(`🎉 Welcome, ${result.user.name}! Registration successful!`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.success(
+        `🎉 Welcome, ${name}! Registration successful!`
+      );
 
-      // Navigate after short delay
       setTimeout(() => navigate('/'), 1500);
-
     } catch (err) {
-      toast.error(err.message || 'Registration failed', {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      toast.error(
+        err.message || 'Registration failed'
+      );
     } finally {
       setLoading(false);
     }
@@ -74,36 +60,46 @@ const Register = () => {
             placeholder="Name"
             required
             value={name}
-            onChange={(e) => setName(e.target.value)}
-            autoComplete="name"
-            aria-label="Name"
+            onChange={(e) =>
+              setName(e.target.value)
+            }
           />
+
           <input
             type="email"
             placeholder="Email"
             required
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="email"
-            aria-label="Email"
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
           />
+
           <input
             type="password"
             placeholder="Password"
             required
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="new-password"
-            aria-label="Password"
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
           />
 
-          <button type="submit" disabled={loading}>
-            {loading ? 'Registering...' : 'Register'}
+          <button
+            type="submit"
+            disabled={loading}
+          >
+            {loading
+              ? 'Registering...'
+              : 'Register'}
           </button>
         </form>
 
         <p>
-          Already registered? <Link to="/login">Login here</Link>
+          Already registered?{' '}
+          <Link to="/login">
+            Login here
+          </Link>
         </p>
       </div>
     </div>

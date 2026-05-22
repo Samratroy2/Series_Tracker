@@ -48,9 +48,7 @@ const Sidebar = () => {
     navigate('/login');
   };
   
-const profileImageUrl = user?.profilePhoto
-  ? `${process.env.REACT_APP_API_URL}/uploads/${encodeURIComponent(user.profilePhoto)}`
-  : defaultAvatar;
+  const profileImageUrl = user?.photoURL || defaultAvatar;
 
   const menuItems = [
     { name: 'Profile', path: '/profile', icon: <UserCircle size={20} />, title: 'Edit Profile' },
@@ -84,7 +82,7 @@ const profileImageUrl = user?.profilePhoto
             />
           </div>
           {!loading && isOpen && (
-            <h2 className="sidebar-user-name">{user?.userId || 'Guest'}</h2>
+            <h2 className="sidebar-user-name">{user?.name || 'Guest'}</h2>
           )}
         </div>
       </div>
