@@ -19,7 +19,6 @@ import {
 import { db } from '../firebase';
 
 const ClubContext = createContext();
-
 export const ClubProvider = ({ children }) => {
   const [clubs, setClubs] = useState([]);
 
