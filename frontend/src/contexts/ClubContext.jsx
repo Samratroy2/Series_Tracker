@@ -1,3 +1,4 @@
+//frontend\src\contexts\ClubContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -22,7 +23,7 @@ export const ClubProvider = ({ children }) => {
     }
   };
 
-  const addClub = async (name, createdBy) => {
+  const createClub = async (name, createdBy) => {
     if (!name || !createdBy) return;
 
     try {
@@ -132,7 +133,7 @@ export const ClubProvider = ({ children }) => {
     <ClubContext.Provider
       value={{
         clubs,
-        addClub,
+        createClub,
         requestJoinClub,
         approveJoin,
         addMessage,

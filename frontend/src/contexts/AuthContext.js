@@ -5,6 +5,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const AuthContext = createContext();
+const API_URL = process.env.REACT_APP_API_URL;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
@@ -24,7 +25,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setLoading(true);
-      const res = await fetch('process.env.REACT_APP_API_URL/api/auth/login', {
+
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -36,9 +38,13 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await res.json();
-      if (!data.user) throw new Error('Invalid server response');
+
+      if (!data.user) {
+        throw new Error('Invalid server response');
+      }
 
       setUser(data.user);
+
       return { success: true, user: data.user };
     } catch (err) {
       return { success: false, message: err.message };
@@ -51,7 +57,8 @@ export const AuthProvider = ({ children }) => {
   const signup = async (name, email, password) => {
     try {
       setLoading(true);
-      const res = await fetch('process.env.REACT_APP_API_URL/api/auth/signup', {
+
+      const res = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),
@@ -63,9 +70,13 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await res.json();
-      if (!data.user) throw new Error('Invalid server response');
+
+      if (!data.user) {
+        throw new Error('Invalid server response');
+      }
 
       setUser(data.user);
+
       return { success: true, user: data.user };
     } catch (err) {
       return { success: false, message: err.message };
@@ -108,7 +119,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       const res = await axios.put(
-        `process.env.REACT_APP_API_URL/api/users/${user._id}`,
+        `${API_URL}/api/users/${user._id}`,
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );

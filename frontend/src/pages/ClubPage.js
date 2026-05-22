@@ -1,7 +1,5 @@
 // frontend/src/pages/ClubPage.js
 
-// frontend/src/pages/ClubPage.js
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useClubs } from '../contexts/ClubContext';
 import { useAuth } from '../contexts/AuthContext';

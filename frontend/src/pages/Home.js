@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Home = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const [animeList, setAnimeList] = useState([]);
   const [watchingList, setWatchingList] = useState([]);
   const [completedList, setCompletedList] = useState([]);
@@ -54,11 +54,11 @@ const Home = () => {
   }, [userId]);
 
   useEffect(() => {
-    fetch('process.env.REACT_APP_API_URL/api/anime')
+    fetch(`${API_URL}/api/anime`)
       .then(res => res.json())
       .then(data => {
         setAnimeList(data);
-        localStorage.setItem('animeList', JSON.stringify(data)); // save globally
+        localStorage.setItem('animeList', JSON.stringify(data));
       })
       .catch(err => console.error(err));
   }, []);
