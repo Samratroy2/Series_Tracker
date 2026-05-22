@@ -14,7 +14,7 @@ const userRoutes = require('./routes/userRoutes'); // ✅ Add this if you want p
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/animeClubApp';
+const MONGO_URI = process.env.MONGO_URI;
 
 // Serve profile images
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
