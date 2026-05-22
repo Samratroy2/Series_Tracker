@@ -1,251 +1,736 @@
 // frontend/src/pages/Home.js
-import React, { useEffect, useState } from 'react';
+
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+
 import './Home.css';
+
 import { useTheme } from '../ThemeContext';
+
 import { useNavigate } from 'react-router-dom';
 
+import {
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
+
+import { db } from '../firebase';
+
+import { useAuth } from '../contexts/AuthContext';
+
 const Home = () => {
+
   const { theme } = useTheme();
+
+  const { user } = useAuth();
+
   const navigate = useNavigate();
-  const API_URL = process.env.REACT_APP_API_URL;
-  const [animeList, setAnimeList] = useState([]);
-  const [watchingList, setWatchingList] = useState([]);
-  const [completedList, setCompletedList] = useState([]);
-  const [onHoldList, setOnHoldList] = useState([]);
-  const [droppedList, setDroppedList] = useState([]);
-  const [planList, setPlanList] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [newAnime, setNewAnime] = useState({
-    title: '',
-    episodes: '',
-    score: '',
-    genre: '',
-    type: 'Anime',
-    year: new Date().getFullYear(),
-    image: ''
-  });
 
-  const user = JSON.parse(localStorage.getItem('user'));
-  useEffect(() => {
-    if (!user) navigate('/login');
-  }, [navigate, user]);
+  const [animeList, setAnimeList] =
+    useState([]);
 
-  const userId = user?._id || user?.id || 'guest';
+  const [watchingList, setWatchingList] =
+    useState([]);
 
-  // Load lists for this user
-  const loadLists = () => {
-    setWatchingList(JSON.parse(localStorage.getItem(`watchingList_${userId}`)) || []);
-    setCompletedList(JSON.parse(localStorage.getItem(`completedList_${userId}`)) || []);
-    setOnHoldList(JSON.parse(localStorage.getItem(`onHoldList_${userId}`)) || []);
-    setDroppedList(JSON.parse(localStorage.getItem(`droppedList_${userId}`)) || []);
-    setPlanList(JSON.parse(localStorage.getItem(`planToWatchList_${userId}`)) || []);
+  const [planList, setPlanList] =
+    useState([]);
 
-    const storedAnime = JSON.parse(localStorage.getItem('animeList')) || [];
-    setAnimeList(storedAnime);
-  };
+  const [showForm, setShowForm] =
+    useState(false);
+
+  const [newAnime, setNewAnime] =
+    useState({
+      title: '',
+      episodes: '',
+      score: '',
+      genre: '',
+      type: 'Anime',
+      year:
+        new Date().getFullYear(),
+      image: '',
+    });
+
+  // =========================
+  // AUTH
+  // =========================
 
   useEffect(() => {
-    loadLists();
-    const handleStorage = (e) => {
-      if (e.key?.includes(userId)) loadLists();
-    };
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, [userId]);
+
+    if (!user) {
+      navigate('/login');
+    }
+
+  }, [user, navigate]);
+
+  const userId = user?.uid;
+
+  // =========================
+  // FETCH ANIME
+  // =========================
 
   useEffect(() => {
-    fetch(`${API_URL}/api/anime`)
-      .then(res => res.json())
-      .then(data => {
-        setAnimeList(data);
-        localStorage.setItem('animeList', JSON.stringify(data));
-      })
-      .catch(err => console.error(err));
+
+    fetchAnime();
+
   }, []);
 
-  const getStatus = (anime) => {
-    const id = anime._id || anime.mal_id;
-    if (completedList.find(a => (a._id || a.mal_id) === id)) return 'Completed';
-    if (watchingList.find(a => (a._id || a.mal_id) === id)) return 'Watching';
-    if (onHoldList.find(a => (a._id || a.mal_id) === id)) return 'On Hold';
-    if (droppedList.find(a => (a._id || a.mal_id) === id)) return 'Dropped';
-    if (planList.find(a => (a._id || a.mal_id) === id)) return 'Plan to Watch';
-    return null;
-  };
+  const fetchAnime = async () => {
 
-  const saveList = (name, list) => {
-    localStorage.setItem(`${name}_${userId}`, JSON.stringify(list));
-  };
+    try {
 
-  const addToWatching = (anime) => {
-    if (!getStatus(anime)) {
-      const updated = [...watchingList, { ...anime, episodesWatched: 0 }];
-      setWatchingList(updated);
-      saveList('watchingList', updated);
+      const snapshot =
+        await getDocs(
+          collection(
+            db,
+            'anime'
+          )
+        );
+
+      const animeData =
+        snapshot.docs.map(
+          (doc) => ({
+            _id: doc.id,
+            ...doc.data(),
+          })
+        );
+
+      setAnimeList(
+        animeData
+      );
+
+    } catch (err) {
+
+      console.error(err);
+
     }
   };
 
-  const addToPlan = (anime) => {
-    if (!getStatus(anime)) {
-      const updated = [...planList, anime];
-      setPlanList(updated);
-      saveList('planToWatchList', updated);
-    }
-  };
+  // =========================
+  // LOAD USER LISTS
+  // =========================
 
-  const updateEpisodeCount = (animeId, change) => {
-    const updatedWatching = watchingList.map(anime => {
-      const id = anime._id || anime.mal_id;
-      if (id === animeId) {
-        let newCount = (anime.episodesWatched || 0) + change;
-        newCount = Math.max(0, Math.min(newCount, anime.episodes || 0));
-        if (newCount === anime.episodes) {
-          const newCompleted = [...completedList, { ...anime, episodesWatched: newCount }];
-          setCompletedList(newCompleted);
-          saveList('completedList', newCompleted);
-          return null;
-        }
-        return { ...anime, episodesWatched: newCount };
+  const loadLists = async () => {
+
+    if (!userId)
+      return;
+
+    try {
+
+      const userRef = doc(
+        db,
+        'users',
+        userId
+      );
+
+      const userSnap =
+        await getDoc(
+          userRef
+        );
+
+      if (
+        userSnap.exists()
+      ) {
+
+        const data =
+          userSnap.data();
+
+        setWatchingList(
+          data.watching ||
+            []
+        );
+
+        setPlanList(
+          data.planToWatch ||
+            []
+        );
+
+      } else {
+
+        await setDoc(
+          userRef,
+          {
+            watching: [],
+            planToWatch: [],
+          }
+        );
+
       }
-      return anime;
-    }).filter(Boolean);
 
-    setWatchingList(updatedWatching);
-    saveList('watchingList', updatedWatching);
+    } catch (err) {
+
+      console.error(err);
+
+    }
   };
 
-  const moveToList = (anime, targetListName) => {
-    const id = anime._id || anime.mal_id;
+  useEffect(() => {
 
-    const updatedWatchingList = watchingList.filter(a => (a._id || a.mal_id) !== id);
-    setWatchingList(updatedWatchingList);
-    saveList('watchingList', updatedWatchingList);
+    loadLists();
 
-    const targetList = JSON.parse(localStorage.getItem(`${targetListName}_${userId}`)) || [];
-    targetList.push(anime);
-    localStorage.setItem(`${targetListName}_${userId}`, JSON.stringify(targetList));
+  }, [userId]);
+
+  // =========================
+  // GET STATUS
+  // =========================
+
+  const getStatus = (
+    anime
+  ) => {
+
+    const id =
+      anime._id;
+
+    if (
+      watchingList.find(
+        (a) =>
+          a._id === id
+      )
+    ) {
+      return 'Watching';
+    }
+
+    if (
+      planList.find(
+        (a) =>
+          a._id === id
+      )
+    ) {
+      return 'Plan to Watch';
+    }
+
+    return 'None';
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewAnime(prev => ({ ...prev, [name]: value }));
-  };
+  // =========================
+  // CHANGE STATUS
+  // =========================
 
-  const addNewAnime = () => {
-    if (!newAnime.title) return alert('Title required');
-    const newEntry = { ...newAnime, mal_id: Date.now() };
-    const updatedAnimeList = [...animeList, newEntry];
-    setAnimeList(updatedAnimeList);
-    localStorage.setItem('animeList', JSON.stringify(updatedAnimeList)); // persist globally
-    setNewAnime({ title: '', episodes: '', score: '', genre: '', type: 'Anime', year: new Date().getFullYear(), image: '' });
-    setShowForm(false);
-  };
+  const changeStatus =
+    async (
+      anime,
+      status
+    ) => {
+
+      const animeId =
+        anime._id;
+
+      // REMOVE FROM BOTH
+
+      const newWatching =
+        watchingList.filter(
+          (a) =>
+            a._id !==
+            animeId
+        );
+
+      const newPlan =
+        planList.filter(
+          (a) =>
+            a._id !==
+            animeId
+        );
+
+      // ADD TO CURRENT
+
+      if (
+        status ===
+        'Watching'
+      ) {
+
+        newWatching.push({
+          ...anime,
+          episodesWatched: 0,
+        });
+      }
+
+      if (
+        status ===
+        'Plan to Watch'
+      ) {
+
+        newPlan.push(
+          anime
+        );
+      }
+
+      // UPDATE STATE
+
+      setWatchingList(
+        newWatching
+      );
+
+      setPlanList(
+        newPlan
+      );
+
+      // UPDATE FIREBASE
+
+      try {
+
+        const userRef =
+          doc(
+            db,
+            'users',
+            userId
+          );
+
+        await updateDoc(
+          userRef,
+          {
+            watching:
+              newWatching,
+
+            planToWatch:
+              newPlan,
+          }
+        );
+
+      } catch (err) {
+
+        console.error(
+          err
+        );
+
+      }
+    };
+
+  // =========================
+  // UPDATE EPISODES
+  // =========================
+
+  const updateEpisodeCount =
+    async (
+      animeId,
+      change
+    ) => {
+
+      const updatedWatching =
+        watchingList.map(
+          (anime) => {
+
+            if (
+              anime._id ===
+              animeId
+            ) {
+
+              let newCount =
+                (
+                  anime.episodesWatched ||
+                  0
+                ) + change;
+
+              newCount =
+                Math.max(
+                  0,
+                  Math.min(
+                    newCount,
+                    anime.episodes
+                  )
+                );
+
+              return {
+                ...anime,
+                episodesWatched:
+                  newCount,
+              };
+            }
+
+            return anime;
+          }
+        );
+
+      setWatchingList(
+        updatedWatching
+      );
+
+      try {
+
+        const userRef =
+          doc(
+            db,
+            'users',
+            userId
+          );
+
+        await updateDoc(
+          userRef,
+          {
+            watching:
+              updatedWatching,
+          }
+        );
+
+      } catch (err) {
+
+        console.error(
+          err
+        );
+
+      }
+    };
+
+  // =========================
+  // INPUT CHANGE
+  // =========================
+
+  const handleInputChange =
+    (e) => {
+
+      const {
+        name,
+        value,
+      } = e.target;
+
+      setNewAnime(
+        (prev) => ({
+          ...prev,
+          [name]:
+            value,
+        })
+      );
+    };
+
+  // =========================
+  // ADD ANIME
+  // =========================
+
+  const addNewAnime =
+    async () => {
+
+      if (
+        !newAnime.title
+      ) {
+
+        return alert(
+          'Title required'
+        );
+      }
+
+      try {
+
+        const docRef =
+          await addDoc(
+            collection(
+              db,
+              'anime'
+            ),
+            newAnime
+          );
+
+        const addedAnime =
+          {
+            _id:
+              docRef.id,
+            ...newAnime,
+          };
+
+        setAnimeList(
+          (prev) => [
+            ...prev,
+            addedAnime,
+          ]
+        );
+
+        setNewAnime({
+          title: '',
+          episodes: '',
+          score: '',
+          genre: '',
+          type:
+            'Anime',
+          year:
+            new Date().getFullYear(),
+          image: '',
+        });
+
+        setShowForm(
+          false
+        );
+
+      } catch (err) {
+
+        console.error(
+          err
+        );
+
+      }
+    };
 
   return (
-    <div className={`home ${theme}`}>
-      <button className="toggle-form-btn" onClick={() => setShowForm(true)}>Add New Anime</button>
+    <div
+      className={`home ${theme}`}
+    >
+
+      {/* ADD BUTTON */}
+
+      <button
+        className="toggle-form-btn"
+        onClick={() =>
+          setShowForm(
+            true
+          )
+        }
+      >
+        + Add Anime
+      </button>
+
+      {/* MODAL */}
 
       {showForm && (
-        <div className="modal-overlay" onClick={() => setShowForm(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h2 style={{ background:'#2980b9', color:'white'}}>Enter your series details to track it</h2>
+
+        <div
+          className="modal-overlay"
+          onClick={() =>
+            setShowForm(
+              false
+            )
+          }
+        >
+
+          <div
+            className="modal-content"
+            onClick={(e) =>
+              e.stopPropagation()
+            }
+          >
+
+            <h2>
+              Add Anime
+            </h2>
+
             <div className="form-grid">
-              {['title','episodes','genre','score','image'].map(field => (
-                <div className="form-group" key={field}>
-                  <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+
+              {[
+                'title',
+                'episodes',
+                'genre',
+                'score',
+                'image',
+              ].map(
+                (
+                  field
+                ) => (
+
                   <input
-                    type={field==='episodes' || field==='score' ? 'number' : 'text'}
-                    name={field}
-                    value={newAnime[field]}
-                    onChange={handleInputChange}
-                    placeholder={field==='image' ? 'Paste image URL' : `Enter ${field}`}
+                    key={
+                      field
+                    }
+                    type="text"
+                    name={
+                      field
+                    }
+                    placeholder={
+                      field
+                    }
+                    value={
+                      newAnime[
+                        field
+                      ]
+                    }
+                    onChange={
+                      handleInputChange
+                    }
                   />
-                </div>
-              ))}
-              <div className="form-group">
-                <label>Type</label>
-                <select name="type" value={newAnime.type} onChange={handleInputChange}>
-                  <option value="Anime">Anime</option>
-                  <option value="Serial">Serial</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Year</label>
-                <input type="number" name="year" value={newAnime.year} onChange={handleInputChange} min="1900" max={new Date().getFullYear()} />
-              </div>
-              <div className="form-group full-width">
-                <button onClick={addNewAnime} className="submit-btn">Add Anime</button>
-              </div>
+                )
+              )}
+
+              <select
+                name="type"
+                value={
+                  newAnime.type
+                }
+                onChange={
+                  handleInputChange
+                }
+              >
+
+                <option value="Anime">
+                  Anime
+                </option>
+
+                <option value="Serial">
+                  Serial
+                </option>
+
+                <option value="Movie">
+                  Movie
+                </option>
+
+                <option value="Drama">
+                  Drama
+                </option>
+
+              </select>
+
+              <input
+                type="number"
+                name="year"
+                value={
+                  newAnime.year
+                }
+                onChange={
+                  handleInputChange
+                }
+              />
+
+              <button
+                className="submit-btn"
+                onClick={
+                  addNewAnime
+                }
+              >
+                Save
+              </button>
+
             </div>
+
           </div>
+
         </div>
       )}
 
-      <div className="home-section">
-        {['Top Anime','Serials','New Releases','Popular in Action Genre'].map((title, idx) => {
-          let data = [];
-          if (title === 'Top Anime') data = animeList.filter(a => a.type === 'Anime');
-          if (title === 'Serials') data = animeList.filter(a => a.type === 'Serial');
-          if (title === 'New Releases') data = animeList.filter(a => a.year >= 2023);
-          if (title === 'Popular in Action Genre') data = animeList.filter(a => a.genre?.toLowerCase() === 'action');
-          return <AnimeSection key={idx} title={title} data={data} addToWatching={addToWatching} addToPlan={addToPlan} updateEpisode={updateEpisodeCount} getStatus={getStatus} watchingList={watchingList} />;
-        })}
+      {/* ANIME GRID */}
 
-        {['Watching','Completed','On Hold','Dropped','Plan to Watch'].map(listName => {
-          const listData = {
-            'Watching': watchingList,
-            'Completed': completedList,
-            'On Hold': onHoldList,
-            'Dropped': droppedList,
-            'Plan to Watch': planList
-          }[listName];
-          return <AnimeSection key={listName} title={listName} data={listData} addToWatching={addToWatching} addToPlan={addToPlan} updateEpisode={updateEpisodeCount} getStatus={getStatus} watchingList={watchingList} />;
-        })}
-      </div>
-    </div>
-  );
-};
-
-const AnimeSection = ({ title, data, addToWatching, addToPlan, updateEpisode, getStatus, watchingList }) => {
-  if (!data || !data.length) return null;
-  return (
-    <div className="section-block">
-      <h2 className="section-title">{title}</h2>
       <div className="anime-grid">
-        {data.map(anime => {
-          const id = anime._id || anime.mal_id;
-          const status = getStatus(anime);
-          const inWatching = watchingList.find(a => (a._id || a.mal_id) === id);
-          const imageUrl = anime.image || anime.images?.jpg?.image_url || 'https://via.placeholder.com/220x320?text=No+Image';
 
-          return (
-            <div className="anime-card" key={id}>
-              <img className="anime-image" src={imageUrl} alt={anime.title} />
-              {status && <span className={`badge badge-${status.replace(/ /g,'').toLowerCase()}`}>{status}</span>}
-              <div className="anime-info">
-                <h3>{anime.title}</h3>
-                <p>{`Episodes: ${anime.episodes || '?'}`}</p>
-                <p>{`Rating: ${anime.score || 'N/A'}`}</p>
+        {animeList.map(
+          (
+            anime
+          ) => {
 
-                {!status && (
+            const status =
+              getStatus(
+                anime
+              );
+
+            const inWatching =
+              watchingList.find(
+                (a) =>
+                  a._id ===
+                  anime._id
+              );
+
+            return (
+
+              <div
+                className="anime-card"
+                key={
+                  anime._id
+                }
+              >
+
+                <img
+                  className="anime-image"
+                  src={
+                    anime.image
+                  }
+                  alt={
+                    anime.title
+                  }
+                />
+
+                <div className="anime-info">
+
+                  <h3>
+                    {
+                      anime.title
+                    }
+                  </h3>
+
+                  <p>
+                    Episodes:{' '}
+                    {
+                      anime.episodes
+                    }
+                  </p>
+
+                  <p>
+                    Rating:{' '}
+                    {
+                      anime.score
+                    }
+                  </p>
+
+                  {/* BUTTONS */}
+
                   <div className="anime-action-buttons">
-                    <button className="add-btn" onClick={() => addToWatching(anime)}>Add to Watching</button>
-                    <button className="plan-btn" onClick={() => addToPlan(anime)}>Plan to Watch</button>
-                  </div>
-                )}
 
-                {inWatching && (
-                  <div className="episode-controls">
-                    <button onClick={() => updateEpisode(id, -1)} disabled={(inWatching.episodesWatched || 0) === 0}>−</button>
-                    <span>{inWatching.episodesWatched || 0} / {anime.episodes || '?'}</span>
-                    <button onClick={() => updateEpisode(id, 1)} disabled={(inWatching.episodesWatched || 0) >= (anime.episodes || 0)}>＋</button>
+                    {/* WATCHING */}
+
+                    <button
+                      disabled={
+                        status ===
+                        'Plan to Watch'
+                      }
+                      className={`status-btn ${
+                        status ===
+                        'Watching'
+                          ? 'active-watching'
+                          : ''
+                      }`}
+                      onClick={() =>
+                        changeStatus(
+                          anime,
+                          status ===
+                            'Watching'
+                            ? 'None'
+                            : 'Watching'
+                        )
+                      }
+                    >
+                      {status ===
+                      'Watching'
+                        ? 'Watching'
+                        : 'Add Watching'}
+                    </button>
+
+                    {/* PLAN */}
+
+                    <button
+                      disabled={
+                        status ===
+                        'Watching'
+                      }
+                      className={`status-btn ${
+                        status ===
+                        'Plan to Watch'
+                          ? 'active-plan'
+                          : ''
+                      }`}
+                      onClick={() =>
+                        changeStatus(
+                          anime,
+                          status ===
+                            'Plan to Watch'
+                            ? 'None'
+                            : 'Plan to Watch'
+                        )
+                      }
+                    >
+                      {status ===
+                      'Plan to Watch'
+                        ? 'Planned'
+                        : 'Plan To Watch'}
+                    </button>
+
                   </div>
-                )}
+                  
+                </div>
+
               </div>
-            </div>
-          );
-        })}
+            );
+          }
+        )}
+
       </div>
+
     </div>
   );
 };

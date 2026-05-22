@@ -1,93 +1,382 @@
 // frontend/src/pages/PlanToWatch.js
 
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+
+import {
+  Link,
+  useNavigate,
+} from 'react-router-dom';
+
+import {
+  doc,
+  getDoc,
+  updateDoc,
+} from 'firebase/firestore';
+
+import { db } from '../firebase';
+
+import {
+  useAuth,
+} from '../contexts/AuthContext';
+
 import './PlanToWatch.css';
 
 const PlanToWatch = () => {
-  const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user'));
-  useEffect(() => { if (!user) navigate('/login'); }, [navigate, user]);
 
-  const userId = user?._id || user?.id || 'guest';
-  const storageKey = `planToWatchList_${userId}`;
+  const navigate =
+    useNavigate();
 
-  const [planList, setPlanList] = useState([]);
+  const { user } =
+    useAuth();
 
-  const loadPlanList = () => {
-    setPlanList(JSON.parse(localStorage.getItem(storageKey)) || []);
-  };
+  const [planList,
+    setPlanList] =
+    useState([]);
+
+  const [watchingList,
+    setWatchingList] =
+    useState([]);
 
   useEffect(() => {
-    loadPlanList();
-    const handleEvent = () => loadPlanList();
-    window.addEventListener(`${storageKey}-updated`, handleEvent);
-    return () => window.removeEventListener(`${storageKey}-updated`, handleEvent);
-  }, [storageKey]);
 
-  const savePlanList = (list) => {
-    setPlanList(list);
-    localStorage.setItem(storageKey, JSON.stringify(list));
-    window.dispatchEvent(new Event(`${storageKey}-updated`));
-  };
-
-  const removeAnime = (id) => {
-    const updated = planList.filter(a => (a._id || a.mal_id) !== id);
-    savePlanList(updated);
-  };
-
-  const removeAll = () => {
-    savePlanList([]);
-  };
-
-  const moveToWatching = (anime) => {
-    const watchingKey = `watchingList_${userId}`;
-    const watchingList = JSON.parse(localStorage.getItem(watchingKey)) || [];
-    if (!watchingList.find(a => (a._id || a.mal_id) === (anime._id || anime.mal_id))) {
-      watchingList.push({ ...anime, episodesWatched: 0 });
-      localStorage.setItem(watchingKey, JSON.stringify(watchingList));
-      window.dispatchEvent(new Event(`${watchingKey}-updated`));
+    if (!user) {
+      navigate('/login');
     }
-    removeAnime(anime._id || anime.mal_id);
-  };
+
+  }, [user, navigate]);
+
+  const userId =
+    user?.uid;
+
+  // =========================
+  // LOAD DATA
+  // =========================
+
+  const loadLists =
+    async () => {
+
+      if (!userId)
+        return;
+
+      try {
+
+        const userRef =
+          doc(
+            db,
+            'users',
+            userId
+          );
+
+        const userSnap =
+          await getDoc(
+            userRef
+          );
+
+        if (
+          userSnap.exists()
+        ) {
+
+          const data =
+            userSnap.data();
+
+          setPlanList(
+            data.planToWatch ||
+            []
+          );
+
+          setWatchingList(
+            data.watching ||
+            []
+          );
+        }
+
+      } catch (err) {
+
+        console.error(
+          err
+        );
+
+      }
+    };
+
+  useEffect(() => {
+
+    loadLists();
+
+  }, [userId]);
+
+  // =========================
+  // UPDATE FIREBASE
+  // =========================
+
+  const updateLists =
+    async (
+      newPlan,
+      newWatching
+    ) => {
+
+      try {
+
+        const userRef =
+          doc(
+            db,
+            'users',
+            userId
+          );
+
+        await updateDoc(
+          userRef,
+          {
+            planToWatch:
+              newPlan,
+
+            watching:
+              newWatching,
+          }
+        );
+
+      } catch (err) {
+
+        console.error(
+          err
+        );
+
+      }
+    };
+
+  // =========================
+  // REMOVE ONE
+  // =========================
+
+  const removeAnime =
+    async (id) => {
+
+      const updated =
+        planList.filter(
+          (anime) =>
+            anime._id !==
+            id
+        );
+
+      setPlanList(
+        updated
+      );
+
+      await updateLists(
+        updated,
+        watchingList
+      );
+    };
+
+  // =========================
+  // REMOVE ALL
+  // =========================
+
+  const removeAll =
+    async () => {
+
+      setPlanList([]);
+
+      await updateLists(
+        [],
+        watchingList
+      );
+    };
+
+  // =========================
+  // MOVE TO WATCHING
+  // =========================
+
+  const moveToWatching =
+    async (
+      anime
+    ) => {
+
+      const animeId =
+        anime._id;
+
+      // REMOVE FROM PLAN
+
+      const updatedPlan =
+        planList.filter(
+          (a) =>
+            a._id !==
+            animeId
+        );
+
+      // CHECK DUPLICATE
+
+      const alreadyExists =
+        watchingList.find(
+          (a) =>
+            a._id ===
+            animeId
+        );
+
+      let updatedWatching =
+        [...watchingList];
+
+      if (
+        !alreadyExists
+      ) {
+
+        updatedWatching.push({
+          ...anime,
+          episodesWatched:
+            anime
+              .episodesWatched ||
+            0,
+        });
+      }
+
+      // UPDATE STATE
+
+      setPlanList(
+        updatedPlan
+      );
+
+      setWatchingList(
+        updatedWatching
+      );
+
+      // UPDATE FIREBASE
+
+      await updateLists(
+        updatedPlan,
+        updatedWatching
+      );
+    };
 
   return (
-    <div className="plan-container">
-      <h2>📝 Plan to Watch</h2>
 
-      {planList.length > 0 && (
-        <button className="remove-all-btn" onClick={removeAll}>🗑 Remove All</button>
+    <div className="plan-container">
+
+      <h2>
+        📝 Plan To Watch
+      </h2>
+
+      {planList.length >
+        0 && (
+
+        <button
+          className="remove-all-btn"
+          onClick={
+            removeAll
+          }
+        >
+          🗑 Remove All
+        </button>
       )}
 
-      {planList.length === 0 ? (
-        <p>No anime in your plan to watch list.</p>
-      ) : (
-        <div className="plan-list">
-          {planList.map(anime => {
-            const id = anime._id || anime.mal_id;
-            const imageUrl = anime.image || anime.images?.jpg?.image_url || 'https://via.placeholder.com/150x220?text=No+Image';
+      {planList.length ===
+      0 ? (
 
-            return (
-              <div key={id} className="plan-card">
-                <Link to={`/anime/${id}`}>
-                  <img src={imageUrl} alt={anime.title} />
-                </Link>
-                <div className="plan-card-info">
-                  <h4 style={{ color: 'red', fontSize: '1rem' }}>{anime.title}</h4>
-                  <div className="plan-card-buttons">
-                    <button className="move-btn" onClick={() => moveToWatching(anime)}>
-                      Move to Watching
-                    </button>
-                    <button className="remove-btn" onClick={() => removeAnime(id)}>
-                      Remove
-                    </button>
+        <p>
+          No anime in your
+          plan list.
+        </p>
+
+      ) : (
+
+        <div className="plan-list">
+
+          {planList.map(
+            (
+              anime
+            ) => {
+
+              const id =
+                anime._id;
+
+              const imageUrl =
+                anime.image ||
+                'https://via.placeholder.com/150x220?text=No+Image';
+
+              return (
+
+                <div
+                  key={id}
+                  className="plan-card"
+                >
+
+                  <Link
+                    to={`/anime/${id}`}
+                  >
+
+                    <img
+                      src={
+                        imageUrl
+                      }
+                      alt={
+                        anime.title
+                      }
+                    />
+
+                  </Link>
+
+                  <div className="plan-card-info">
+
+                    <h4>
+                      {
+                        anime.title
+                      }
+                    </h4>
+
+                    <p>
+                      Episodes:
+                      {' '}
+                      {
+                        anime.episodes
+                      }
+                    </p>
+
+                    <p>
+                      Rating:
+                      {' '}
+                      {
+                        anime.score
+                      }
+                    </p>
+
+                    <div className="plan-card-buttons">
+
+                      <button
+                        className="move-btn"
+                        onClick={() =>
+                          moveToWatching(
+                            anime
+                          )
+                        }
+                      >
+                        ▶ Move To Watching
+                      </button>
+
+                      <button
+                        className="remove-btn"
+                        onClick={() =>
+                          removeAnime(
+                            id
+                          )
+                        }
+                      >
+                        🗑 Remove
+                      </button>
+
+                    </div>
+
                   </div>
+
                 </div>
-              </div>
-            );
-          })}
+              );
+            }
+          )}
+
         </div>
       )}
+
     </div>
   );
 };

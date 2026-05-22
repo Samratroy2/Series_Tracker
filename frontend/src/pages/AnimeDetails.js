@@ -1,50 +1,137 @@
 // frontend\src\pages\AnimeDetails.js
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+// frontend/src/pages/AnimeDetails.js
+
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+
+import {
+  useParams,
+} from 'react-router-dom';
+
+import {
+  doc,
+  getDoc,
+} from 'firebase/firestore';
+
+import { db } from '../firebase';
+
 import './AnimeDetails.css';
 
 const AnimeDetails = () => {
   const { id } = useParams();
-  const [anime, setAnime] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  const [anime, setAnime] =
+    useState(null);
+
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
-    const fetchAnime = async () => {
-      try {
-        const res = await fetch(`process.env.REACT_APP_API_URL/api/shows/${id}`);
-        const data = await res.json();
-        setAnime(data);
-      } catch (err) {
-        console.error('Error fetching anime:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const fetchAnime =
+      async () => {
+        try {
+          const docRef = doc(
+            db,
+            'anime',
+            id
+          );
+
+          const docSnap =
+            await getDoc(docRef);
+
+          if (
+            docSnap.exists()
+          ) {
+            setAnime({
+              _id:
+                docSnap.id,
+              ...docSnap.data(),
+            });
+          } else {
+            console.log(
+              'Anime not found'
+            );
+          }
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
 
     fetchAnime();
   }, [id]);
 
   if (loading) {
-    return <div className="details-loading">Loading anime details...</div>;
+    return (
+      <div className="details-loading">
+        Loading...
+      </div>
+    );
   }
 
   if (!anime) {
-    return <div className="details-error">Failed to load anime data.</div>;
+    return (
+      <div className="details-loading">
+        Anime not found
+      </div>
+    );
   }
 
   return (
     <div className="anime-details">
       <img
-        src={anime.image || '/default-poster.jpg'}
+        src={
+          anime.image ||
+          'https://via.placeholder.com/300x400'
+        }
         alt={anime.title}
         className="anime-image"
       />
+
       <div className="anime-info">
-        <h2>{anime.title || 'Untitled'}</h2>
-        <p><strong>Episodes:</strong> {anime.totalEpisodes || 'N/A'}</p>
-        <p><strong>Description:</strong> {anime.description || 'No description available.'}</p>
-        <p><strong>Genres:</strong> {anime.genres?.join(', ') || 'Unknown'}</p>
-        <p><strong>Status:</strong> {anime.status || 'Unknown'}</p>
+        <h2>
+          {anime.title}
+        </h2>
+
+        <p>
+          <strong>
+            Type:
+          </strong>{' '}
+          {anime.type}
+        </p>
+
+        <p>
+          <strong>
+            Episodes:
+          </strong>{' '}
+          {
+            anime.episodes
+          }
+        </p>
+
+        <p>
+          <strong>
+            Genre:
+          </strong>{' '}
+          {anime.genre}
+        </p>
+
+        <p>
+          <strong>
+            Rating:
+          </strong>{' '}
+          {anime.score}
+        </p>
+
+        <p>
+          <strong>
+            Year:
+          </strong>{' '}
+          {anime.year}
+        </p>
       </div>
     </div>
   );

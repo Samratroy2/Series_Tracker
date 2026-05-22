@@ -1,91 +1,369 @@
 // frontend/src/pages/Completed.js
-import React, { useEffect, useState } from 'react';
+
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+
+import {
+  doc,
+  getDoc,
+  updateDoc,
+} from 'firebase/firestore';
+
+import { db } from '../firebase';
+
+import {
+  useAuth,
+} from '../contexts/AuthContext';
+
 import './Completed.css';
 
 const Completed = () => {
-  const [completedList, setCompletedList] = useState([]);
-  const user = JSON.parse(localStorage.getItem('user'));
-  const userId = user?._id || user?.id || 'guest';
 
-  const loadCompleted = () => {
-    const stored = JSON.parse(localStorage.getItem(`completedList_${userId}`)) || [];
-    setCompletedList(stored);
-  };
+  const { user } =
+    useAuth();
+
+  const [completedList,
+    setCompletedList] =
+    useState([]);
+
+  const [watchingList,
+    setWatchingList] =
+    useState([]);
+
+  const userId =
+    user?.uid;
+
+  // =========================
+  // LOAD USER DATA
+  // =========================
+
+  const loadLists =
+    async () => {
+
+      if (!userId)
+        return;
+
+      try {
+
+        const userRef =
+          doc(
+            db,
+            'users',
+            userId
+          );
+
+        const userSnap =
+          await getDoc(
+            userRef
+          );
+
+        if (
+          userSnap.exists()
+        ) {
+
+          const data =
+            userSnap.data();
+
+          setCompletedList(
+            data.completed ||
+            []
+          );
+
+          setWatchingList(
+            data.watching ||
+            []
+          );
+        }
+
+      } catch (err) {
+
+        console.error(
+          err
+        );
+
+      }
+    };
 
   useEffect(() => {
-    loadCompleted();
 
-    const handleStorageChange = (e) => {
-      if (e.key === `completedList_${userId}`) loadCompleted();
-    };
+    loadLists();
 
-    const handleCustomEvent = () => loadCompleted();
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('completedListUpdated', handleCustomEvent);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('completedListUpdated', handleCustomEvent);
-    };
   }, [userId]);
 
-  const handleRemove = (id) => {
-    const updated = completedList.filter(item => (item._id || item.mal_id) !== id);
-    setCompletedList(updated);
-    localStorage.setItem(`completedList_${userId}`, JSON.stringify(updated));
-    window.dispatchEvent(new Event('completedListUpdated'));
-  };
+  // =========================
+  // UPDATE FIREBASE
+  // =========================
 
-  const handleRemoveAll = () => {
-    setCompletedList([]);
-    localStorage.removeItem(`completedList_${userId}`);
-    window.dispatchEvent(new Event('completedListUpdated'));
-  };
+  const updateLists =
+    async ({
+      completed =
+        completedList,
+      watching =
+        watchingList,
+    }) => {
 
-  const moveToWatching = (anime) => {
-    const watchingList = JSON.parse(localStorage.getItem(`watchingList_${userId}`)) || [];
-    if (!watchingList.find(a => (a._id || a.mal_id) === (anime._id || anime.mal_id))) {
-      watchingList.push({ ...anime, episodesWatched: anime.episodesWatched || 0 });
-      localStorage.setItem(`watchingList_${userId}`, JSON.stringify(watchingList));
-      window.dispatchEvent(new Event('watchingListUpdated'));
-    }
-    handleRemove(anime._id || anime.mal_id);
-  };
+      try {
+
+        const userRef =
+          doc(
+            db,
+            'users',
+            userId
+          );
+
+        await updateDoc(
+          userRef,
+          {
+            completed,
+            watching,
+          }
+        );
+
+      } catch (err) {
+
+        console.error(
+          err
+        );
+
+      }
+    };
+
+  // =========================
+  // REMOVE ONE
+  // =========================
+
+  const handleRemove =
+    async (id) => {
+
+      const updated =
+        completedList.filter(
+          (
+            item
+          ) =>
+            item._id !==
+            id
+        );
+
+      setCompletedList(
+        updated
+      );
+
+      await updateLists(
+        {
+          completed:
+            updated,
+        }
+      );
+    };
+
+  // =========================
+  // REMOVE ALL
+  // =========================
+
+  const handleRemoveAll =
+    async () => {
+
+      setCompletedList(
+        []
+      );
+
+      await updateLists(
+        {
+          completed:
+            [],
+        }
+      );
+    };
+
+  // =========================
+  // MOVE TO WATCHING
+  // =========================
+
+  const moveToWatching =
+    async (
+      anime
+    ) => {
+
+      // REMOVE FROM COMPLETED
+
+      const updatedCompleted =
+        completedList.filter(
+          (
+            item
+          ) =>
+            item._id !==
+            anime._id
+        );
+
+      // ADD TO WATCHING
+
+      const alreadyExists =
+        watchingList.find(
+          (
+            a
+          ) =>
+            a._id ===
+            anime._id
+        );
+
+      let updatedWatching =
+        watchingList;
+
+      if (
+        !alreadyExists
+      ) {
+
+        updatedWatching =
+          [
+            ...watchingList,
+            {
+              ...anime,
+              episodesWatched:
+                anime.episodesWatched ||
+                0,
+            },
+          ];
+      }
+
+      setCompletedList(
+        updatedCompleted
+      );
+
+      setWatchingList(
+        updatedWatching
+      );
+
+      await updateLists(
+        {
+          completed:
+            updatedCompleted,
+
+          watching:
+            updatedWatching,
+        }
+      );
+    };
 
   return (
-    <div className="completed-container">
-      <h2>✅ Completed List</h2>
 
-      {completedList.length > 0 && (
-        <button onClick={handleRemoveAll} className="remove-all-btn">
+    <div className="completed-container">
+
+      <h2>
+        ✅ Completed List
+      </h2>
+
+      {completedList.length >
+        0 && (
+
+        <button
+          onClick={
+            handleRemoveAll
+          }
+          className="remove-all-btn"
+        >
           🗑 Remove All
         </button>
       )}
 
-      {completedList.length === 0 ? (
-        <p>No anime completed yet.</p>
-      ) : (
-        <div className="completed-list">
-          {completedList.map(anime => {
-            const id = anime._id || anime.mal_id;
-            const imageUrl = anime.image || anime.images?.jpg?.image_url || 'https://via.placeholder.com/80x120?text=No+Image';
+      {completedList.length ===
+      0 ? (
 
-            return (
-              <div key={id} className="completed-card">
-                <img src={imageUrl} alt={anime.title} />
-                <div className="completed-card-info">
-                  <h4>{anime.title}</h4>
-                  <p>Episodes: {anime.episodesWatched || 0} / {anime.episodes || '?'}</p>
-                  <div className="completed-card-buttons">
-                    <button onClick={() => handleRemove(id)}>🗑 Remove</button>
+        <p>
+          No anime
+          completed yet.
+        </p>
+
+      ) : (
+
+        <div className="completed-list">
+
+          {completedList.map(
+            (
+              anime
+            ) => {
+
+              const id =
+                anime._id;
+
+              const imageUrl =
+                anime.image ||
+                'https://via.placeholder.com/80x120?text=No+Image';
+
+              return (
+
+                <div
+                  key={id}
+                  className="completed-card"
+                >
+
+                  <img
+                    src={
+                      imageUrl
+                    }
+                    alt={
+                      anime.title
+                    }
+                  />
+
+                  <div className="completed-card-info">
+
+                    <h4>
+                      {
+                        anime.title
+                      }
+                    </h4>
+
+                    <p>
+                      Episodes:
+                      {' '}
+                      {
+                        anime.episodesWatched ||
+                        0
+                      }
+                      {' / '}
+                      {
+                        anime.episodes ||
+                        '?'
+                      }
+                    </p>
+
+                    <div className="completed-card-buttons">
+
+                      <button
+                        onClick={() =>
+                          moveToWatching(
+                            anime
+                          )
+                        }
+                      >
+                        ↩ Back To
+                        Watching
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          handleRemove(
+                            id
+                          )
+                        }
+                      >
+                        🗑 Remove
+                      </button>
+
+                    </div>
+
                   </div>
+
                 </div>
-              </div>
-            );
-          })}
+              );
+            }
+          )}
+
         </div>
       )}
+
     </div>
   );
 };

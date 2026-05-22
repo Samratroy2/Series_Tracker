@@ -72,6 +72,16 @@ const AppLayout = () => {
 
           {/* Protected routes */}
           <Route
+            path="/"
+            element={
+              isAuthenticated ? (
+                <Home />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
             path="/profile"
             element={
               <PrivateRoute>

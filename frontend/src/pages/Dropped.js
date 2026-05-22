@@ -1,92 +1,369 @@
 // frontend/src/pages/Dropped.js
-import React, { useEffect, useState } from 'react';
+
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+
+import {
+  doc,
+  getDoc,
+  updateDoc,
+} from 'firebase/firestore';
+
+import { db } from '../firebase';
+
+import {
+  useAuth,
+} from '../contexts/AuthContext';
+
 import './Dropped.css';
 
 const Dropped = () => {
-  const [droppedList, setDroppedList] = useState([]);
-  const user = JSON.parse(localStorage.getItem('user'));
-  const userId = user?._id || user?.id || 'guest';
 
-  const loadDroppedList = () => {
-    const stored = JSON.parse(localStorage.getItem(`droppedList_${userId}`)) || [];
-    setDroppedList(stored);
-  };
+  const { user } =
+    useAuth();
+
+  const [droppedList,
+    setDroppedList] =
+    useState([]);
+
+  const [watchingList,
+    setWatchingList] =
+    useState([]);
+
+  const userId =
+    user?.uid;
+
+  // =========================
+  // LOAD USER DATA
+  // =========================
+
+  const loadLists =
+    async () => {
+
+      if (!userId)
+        return;
+
+      try {
+
+        const userRef =
+          doc(
+            db,
+            'users',
+            userId
+          );
+
+        const userSnap =
+          await getDoc(
+            userRef
+          );
+
+        if (
+          userSnap.exists()
+        ) {
+
+          const data =
+            userSnap.data();
+
+          setDroppedList(
+            data.dropped ||
+            []
+          );
+
+          setWatchingList(
+            data.watching ||
+            []
+          );
+        }
+
+      } catch (err) {
+
+        console.error(
+          err
+        );
+
+      }
+    };
 
   useEffect(() => {
-    loadDroppedList();
 
-    const handleStorageChange = (e) => {
-      if (e.key === `droppedList_${userId}`) loadDroppedList();
-    };
+    loadLists();
 
-    const handleCustomEvent = () => loadDroppedList();
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('droppedListUpdated', handleCustomEvent);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('droppedListUpdated', handleCustomEvent);
-    };
   }, [userId]);
 
-  const handleRemove = (id) => {
-    const updated = droppedList.filter(item => (item._id || item.mal_id) !== id);
-    setDroppedList(updated);
-    localStorage.setItem(`droppedList_${userId}`, JSON.stringify(updated));
-    window.dispatchEvent(new Event('droppedListUpdated'));
-  };
+  // =========================
+  // UPDATE FIREBASE
+  // =========================
 
-  const handleRemoveAll = () => {
-    setDroppedList([]);
-    localStorage.removeItem(`droppedList_${userId}`);
-    window.dispatchEvent(new Event('droppedListUpdated'));
-  };
+  const updateLists =
+    async ({
+      dropped =
+        droppedList,
+      watching =
+        watchingList,
+    }) => {
 
-  const moveToWatching = (anime) => {
-    const watchingList = JSON.parse(localStorage.getItem(`watchingList_${userId}`)) || [];
-    if (!watchingList.find(a => (a._id || a.mal_id) === (anime._id || anime.mal_id))) {
-      watchingList.push({ ...anime, episodesWatched: anime.episodesWatched || 0 });
-      localStorage.setItem(`watchingList_${userId}`, JSON.stringify(watchingList));
-      window.dispatchEvent(new Event('watchingListUpdated'));
-    }
-    handleRemove(anime._id || anime.mal_id);
-  };
+      try {
+
+        const userRef =
+          doc(
+            db,
+            'users',
+            userId
+          );
+
+        await updateDoc(
+          userRef,
+          {
+            dropped,
+            watching,
+          }
+        );
+
+      } catch (err) {
+
+        console.error(
+          err
+        );
+
+      }
+    };
+
+  // =========================
+  // REMOVE ONE
+  // =========================
+
+  const handleRemove =
+    async (id) => {
+
+      const updated =
+        droppedList.filter(
+          (
+            item
+          ) =>
+            item._id !==
+            id
+        );
+
+      setDroppedList(
+        updated
+      );
+
+      await updateLists(
+        {
+          dropped:
+            updated,
+        }
+      );
+    };
+
+  // =========================
+  // REMOVE ALL
+  // =========================
+
+  const handleRemoveAll =
+    async () => {
+
+      setDroppedList(
+        []
+      );
+
+      await updateLists(
+        {
+          dropped:
+            [],
+        }
+      );
+    };
+
+  // =========================
+  // MOVE TO WATCHING
+  // =========================
+
+  const moveToWatching =
+    async (
+      anime
+    ) => {
+
+      // REMOVE FROM DROPPED
+
+      const updatedDropped =
+        droppedList.filter(
+          (
+            item
+          ) =>
+            item._id !==
+            anime._id
+        );
+
+      // ADD TO WATCHING
+
+      const alreadyExists =
+        watchingList.find(
+          (
+            a
+          ) =>
+            a._id ===
+            anime._id
+        );
+
+      let updatedWatching =
+        watchingList;
+
+      if (
+        !alreadyExists
+      ) {
+
+        updatedWatching =
+          [
+            ...watchingList,
+            {
+              ...anime,
+              episodesWatched:
+                anime.episodesWatched ||
+                0,
+            },
+          ];
+      }
+
+      setDroppedList(
+        updatedDropped
+      );
+
+      setWatchingList(
+        updatedWatching
+      );
+
+      await updateLists(
+        {
+          dropped:
+            updatedDropped,
+
+          watching:
+            updatedWatching,
+        }
+      );
+    };
 
   return (
-    <div className="dropped-container">
-      <h2>📉 Dropped List</h2>
 
-      {droppedList.length > 0 && (
-        <button onClick={handleRemoveAll} className="remove-all-btn">
+    <div className="dropped-container">
+
+      <h2>
+        📉 Dropped List
+      </h2>
+
+      {droppedList.length >
+        0 && (
+
+        <button
+          onClick={
+            handleRemoveAll
+          }
+          className="remove-all-btn"
+        >
           🗑 Remove All
         </button>
       )}
 
-      {droppedList.length === 0 ? (
-        <p>No anime dropped.</p>
-      ) : (
-        <div className="dropped-list">
-          {droppedList.map(anime => {
-            const id = anime._id || anime.mal_id;
-            const imageUrl = anime.image || anime.images?.jpg?.image_url || 'https://via.placeholder.com/150x220?text=No+Image';
+      {droppedList.length ===
+      0 ? (
 
-            return (
-              <div key={id} className="dropped-card">
-                <img src={imageUrl} alt={anime.title} />
-                <div className="dropped-card-info">
-                  <h4>{anime.title}</h4>
-                  <p>Episodes Watched: {anime.episodesWatched || 0} / {anime.episodes || '?'}</p>
-                  <div className="dropped-card-buttons">
-                    <button onClick={() => moveToWatching(anime)}>↩ Back to Watching</button>
-                    <button onClick={() => handleRemove(id)}>🗑 Remove</button>
+        <p>
+          No anime dropped.
+        </p>
+
+      ) : (
+
+        <div className="dropped-list">
+
+          {droppedList.map(
+            (
+              anime
+            ) => {
+
+              const id =
+                anime._id;
+
+              const imageUrl =
+                anime.image ||
+                'https://via.placeholder.com/150x220?text=No+Image';
+
+              return (
+
+                <div
+                  key={id}
+                  className="dropped-card"
+                >
+
+                  <img
+                    src={
+                      imageUrl
+                    }
+                    alt={
+                      anime.title
+                    }
+                  />
+
+                  <div className="dropped-card-info">
+
+                    <h4>
+                      {
+                        anime.title
+                      }
+                    </h4>
+
+                    <p>
+                      Episodes
+                      Watched:
+                      {' '}
+                      {
+                        anime.episodesWatched ||
+                        0
+                      }
+                      {' / '}
+                      {
+                        anime.episodes ||
+                        '?'
+                      }
+                    </p>
+
+                    <div className="dropped-card-buttons">
+
+                      <button
+                        onClick={() =>
+                          moveToWatching(
+                            anime
+                          )
+                        }
+                      >
+                        ↩ Back To
+                        Watching
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          handleRemove(
+                            id
+                          )
+                        }
+                      >
+                        🗑 Remove
+                      </button>
+
+                    </div>
+
                   </div>
+
                 </div>
-              </div>
-            );
-          })}
+              );
+            }
+          )}
+
         </div>
       )}
+
     </div>
   );
 };

@@ -1,4 +1,17 @@
-/* Basic sidebar styles */
+/* =========================
+   APP LAYOUT
+========================= */
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
 .sidebar {
   height: 100vh;
   background-color: #ff4c4c;
@@ -13,7 +26,6 @@
   flex-direction: column;
 }
 
-/* Expanded and collapsed widths */
 .sidebar.expanded {
   width: 170px;
 }
@@ -22,12 +34,36 @@
   width: 70px;
 }
 
-/* Header section */
+/* =========================
+   MAIN CONTENT FIX
+========================= */
+
+.main-content {
+  flex: 1;
+  min-height: 100vh;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+  background: #f5f5f5;
+
+  /* IMPORTANT */
+  margin-left: 170px;
+}
+
+/* when sidebar collapsed */
+.sidebar.collapsed ~ .main-content {
+  margin-left: 70px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
 .sidebar-header {
+  position: relative;
   padding: 20px 16px 10px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
 }
 
 .profile-wrapper {
@@ -61,14 +97,16 @@
   border-radius: 50%;
 }
 
-
 .sidebar-user-name {
   font-size: 16px;
   font-weight: 500;
   white-space: nowrap;
 }
 
-/* Sidebar menu list */
+/* =========================
+   MENU
+========================= */
+
 .sidebar-menu {
   list-style: none;
   padding: 0;
@@ -112,12 +150,14 @@
   white-space: nowrap;
 }
 
-/* Active link */
 .menu-item.active {
   background-color: #383857;
 }
 
-/* Logout specific styling */
+/* =========================
+   LOGOUT
+========================= */
+
 .menu-item.logout:hover {
   background-color: #441818;
 }
@@ -127,72 +167,9 @@
   color: #ff4c4c;
 }
 
-/* Toggle button at top-right of screen */
-.top-right-toggle {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  background-color: #ffffff;
-  color: #1e1e2f;
-  border: none;
-  border-radius: 50%;
-  padding: 8px;
-  z-index: 1100;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.top-right-toggle:hover {
-  background-color: #f2f2f2;
-}
-
-/* Responsive behavior */
-@media (max-width: 375px) {
-  .sidebar {
-    width: 60px !important;
-  }
-
-  .sidebar.expanded {
-    width: 60px !important;
-  }
-
-  .sidebar.collapsed {
-    width: 60px;
-  }
-
-  .sidebar-user-name {
-    display: none;
-  }
-}
-
-@media (max-width: 374px) {
-  .toggle-btn {
-    display: none !important;
-  }
-}
-.toggle-btn.top-right {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  z-index: 1001;
-  padding: 6px;
-}
-
-.toggle-btn svg {
-  color: #333;
-}
-
-.sidebar-header {
-  position: relative;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+/* =========================
+   TOGGLE BUTTON
+========================= */
 
 .toggle-wrapper {
   position: absolute;
@@ -201,18 +178,50 @@
 }
 
 .sidebar-toggle-btn {
-  display: flex; /* required for centering */
-  align-items: center; /* vertical alignment */
-  justify-content: center; /* horizontal alignment */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
   cursor: pointer;
   color: #fff;
   transition: transform 0.2s ease;
   padding: 0.5rem;
-  margin: 0 auto; /* centers it horizontally if parent is block */
 }
 
 .sidebar-toggle-btn:hover {
   transform: scale(1.1);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .sidebar.expanded {
+    width: 70px;
+  }
+
+  .sidebar.collapsed {
+    width: 70px;
+  }
+
+  .main-content {
+    margin-left: 70px;
+    padding: 15px;
+  }
+
+  .sidebar-user-name,
+  .text {
+    display: none;
+  }
+
+  .menu-item .icon {
+    margin-right: 0;
+  }
+
+  .menu-item {
+    justify-content: center;
+  }
 }
