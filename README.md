@@ -34,41 +34,6 @@ A full-stack web application for tracking anime, TV series, and movies in one pl
 ```bash
 ANIME-TRACKER/
 │
-├── backend/
-│   │
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   └── userController.js
-│   │
-│   ├── data/
-│   │
-│   ├── middleware/
-│   │   └── upload.js
-│   │
-│   ├── models/
-│   │   ├── Club.js
-│   │   └── User.js
-│   │
-│   ├── node_modules/
-│   │
-│   ├── routes/
-│   │   ├── admin.js
-│   │   ├── anime.js
-│   │   ├── authRoutes.js
-│   │   ├── clubs.js
-│   │   ├── messageRoutes.js
-│   │   ├── polls.js
-│   │   ├── shows.js
-│   │   ├── userRoutes.js
-│   │   └── users.js
-│   │
-│   ├── uploads/
-│   │
-│   ├── .env
-│   ├── index.js
-│   ├── package-lock.json
-│   └── package.json
-│
 ├── frontend/
 │   │
 │   ├── node_modules/
@@ -90,10 +55,8 @@ ANIME-TRACKER/
 │   │   │   └── Slideshow.js
 │   │   │
 │   │   ├── constants/
+│   │   │   ├── ClubContext.js
 │   │   │   └── AuthContext.js
-│   │   │
-│   │   ├── data/
-│   │   │   └── fetchAnimeData.js
 │   │   │
 │   │   ├── pages/
 │   │   │   ├── Admin.js
@@ -117,6 +80,7 @@ ANIME-TRACKER/
 │   │   │   ├── Watching.js
 │   │   │   └── Watchlist.js
 │   │   │
+│   │   ├── firebase.js
 │   │   ├── App.js
 │   │   ├── index.js
 │   │   └── ThemeContext.js
