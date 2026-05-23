@@ -61,7 +61,16 @@ const Sidebar = () => {
     { name: 'Clubs', path: '/clubs', icon: <Users size={20} />, title: 'Clubs' },
     { name: 'Search', path: '/search', icon: <Search size={20} />, title: 'Search Anime' },
     { name: 'Filter', path: '/filter?filter=true', icon: <Filter size={20} />, title: 'Filter by Genre' },
-    { name: 'Admin Panel', path: '/admin', icon: <Shield size={20} />, title: 'Admin Panel' },
+    ...(user?.role === 'admin'
+    ? [
+        {
+          name: 'Admin Panel',
+          path: '/admin',
+          icon: <Shield size={20} />,
+          title: 'Admin Panel',
+        },
+      ]
+    : []),
   ];
 
   return (

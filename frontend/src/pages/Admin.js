@@ -1,111 +1,306 @@
-// frontend/src/pages/Admin.js
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 
-import React, { useEffect, useState } from 'react';
 import './AdminPanel.css';
+
 import { useAuth } from '../contexts/AuthContext';
+
 import { Navigate } from 'react-router-dom';
+
+import {
+  collection,
+  onSnapshot,
+  deleteDoc,
+  doc,
+} from 'firebase/firestore';
+
+import { db } from '../firebase';
 
 const AdminPanel = () => {
   const { user } = useAuth();
-  const [users, setUsers] = useState([]);
-  const [clubs, setClubs] = useState([]);
 
-  const isAdmin = user?.email === 'trysamrat1@gmail.com';
-  if (!user || !isAdmin) return <Navigate to="/login" />;
+  const [users, setUsers] =
+    useState([]);
 
-  // Fetch users
-  const fetchUsers = async () => {
-    try {
-      const res = await fetch(`process.env.REACT_APP_API_URL/api/auth/users?email=${user.email}`);
-      const data = await res.json();
-      setUsers(data);
-    } catch (err) {
-      console.error('Failed to fetch users:', err);
-    }
-  };
+  const [clubs, setClubs] =
+    useState([]);
 
-  // Fetch clubs from backend
-  const fetchClubs = async () => {
-    try {
-      const res = await fetch('process.env.REACT_APP_API_URL/api/clubs');
-      const data = await res.json();
-      setClubs(data);
-    } catch (err) {
-      console.error('Failed to fetch clubs:', err);
-    }
-  };
+  const [animeList, setAnimeList] =
+    useState([]);
 
+  // ✅ Admin access
+  const isAdmin =
+    user?.role === 'admin';
+
+  if (!user || !isAdmin) {
+    return <Navigate to="/login" />;
+  }
+
+  // ✅ Realtime Firestore data
   useEffect(() => {
-    fetchUsers();
-    fetchClubs();
-  }, [user.email]);
+    const unsubscribeUsers =
+      onSnapshot(
+        collection(db, 'users'),
+        (snapshot) => {
+          const usersData =
+            snapshot.docs.map((doc) => ({
+              _id: doc.id,
+              ...doc.data(),
+            }));
 
-  // Delete user
-  const deleteUser = async (id, email) => {
-    if (email === 'trysamrat1@gmail.com') {
-      alert("You can't delete the admin!");
+          setUsers(usersData);
+        }
+      );
+
+    const unsubscribeClubs =
+      onSnapshot(
+        collection(db, 'clubs'),
+        (snapshot) => {
+          const clubsData =
+            snapshot.docs.map((doc) => ({
+              _id: doc.id,
+              ...doc.data(),
+            }));
+
+          setClubs(clubsData);
+        }
+      );
+
+    const unsubscribeAnime =
+      onSnapshot(
+        collection(db, 'anime'),
+        (snapshot) => {
+          const animeData =
+            snapshot.docs.map((doc) => ({
+              _id: doc.id,
+              ...doc.data(),
+            }));
+
+          setAnimeList(animeData);
+        }
+      );
+
+    return () => {
+      unsubscribeUsers();
+      unsubscribeClubs();
+      unsubscribeAnime();
+    };
+  }, []);
+
+  // ✅ Delete user
+  const deleteUser = async (
+    id,
+    email
+  ) => {
+    if (
+      user.email === email
+    ) {
+      alert(
+        "You can't delete yourself!"
+      );
+
       return;
     }
 
-    const confirmDel = window.confirm(`Delete user ${email} and all related data?`);
-    if (!confirmDel) return;
+    const confirmDelete =
+      window.confirm(
+        `Delete user ${email}?`
+      );
+
+    if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`process.env.REACT_APP_API_URL/api/auth/users/${id}?adminEmail=${user.email}`, {
-        method: 'DELETE',
-      });
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || 'Deletion failed');
-      }
-      alert(`User ${email} deleted`);
-      fetchUsers();
+      await deleteDoc(
+        doc(db, 'users', id)
+      );
+
+      alert(
+        'User deleted successfully'
+      );
     } catch (err) {
-      console.error(err.message);
-      alert('Error deleting user.');
+      console.error(err);
+
+      alert(
+        'Error deleting user'
+      );
     }
   };
 
-  // Delete club
-  const deleteClub = async (id) => {
-    const confirmDel = window.confirm('Delete this club and all data?');
-    if (!confirmDel) return;
+  // ✅ Delete club
+  const deleteClub = async (
+    id
+  ) => {
+    const confirmDelete =
+      window.confirm(
+        'Delete this club?'
+      );
+
+    if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`process.env.REACT_APP_API_URL/api/clubs/${id}`, {
-        method: 'DELETE',
-        body: JSON.stringify({ email: user.email }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (!res.ok) throw new Error('Failed to delete club');
+      await deleteDoc(
+        doc(db, 'clubs', id)
+      );
 
-      setClubs(prev => prev.filter(c => c._id !== id));
-      alert('Club deleted successfully');
+      alert(
+        'Club deleted successfully'
+      );
     } catch (err) {
-      console.error(err.message);
-      alert('Error deleting club.');
+      console.error(err);
+
+      alert(
+        'Error deleting club'
+      );
     }
   };
+
+  // =========================
+  // ✅ Statistics
+  // =========================
+
+  const adminCount =
+    users.filter(
+      (u) =>
+        u.role === 'admin'
+    ).length;
+
+  const userCount =
+    users.filter(
+      (u) =>
+        u.role !== 'admin'
+    ).length;
+
+  const totalUsers =
+    adminCount + userCount;
+
+  const animeCount =
+    animeList.filter(
+      (a) =>
+        a.type === 'Anime'
+    ).length;
+
+  const serialCount =
+    animeList.filter(
+      (a) =>
+        a.type === 'Serial'
+    ).length;
+
+  const movieCount =
+    animeList.filter(
+      (a) =>
+        a.type === 'Movie'
+    ).length;
+
+  const dramaCount =
+    animeList.filter(
+      (a) =>
+        a.type === 'Drama'
+    ).length;
 
   return (
     <div className="admin-container">
-      <h1>Admin Panel</h1>
+      <h1>
+        Admin Dashboard
+      </h1>
 
+      {/* SUMMARY */}
+      <section className="admin-summary">
+        <h2>App Summary</h2>
+        
+        <div className="summary-grid">
+          
+          <div className="summary-card">
+            <h3>
+              Regular Users
+            </h3>
+
+            <p>
+              {userCount}
+            </p>
+          </div>
+
+          <div className="summary-card">
+            <h3>Total Users</h3>
+
+            <p>{totalUsers}</p>
+          </div>
+
+          
+
+          <div className="summary-card">
+            <h3>Anime</h3>
+
+            <p>{animeCount}</p>
+          </div>
+
+          <div className="summary-card">
+            <h3>Serial</h3>
+
+            <p>{serialCount}</p>
+          </div>
+
+          <div className="summary-card">
+            <h3>
+              Movie
+            </h3>
+
+            <p>
+              {movieCount}
+            </p>
+          </div>
+
+          <div className="summary-card">
+            <h3>
+              Drama
+            </h3>
+
+            <p>
+                {dramaCount}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* USERS */}
       <section>
-        <h2>Users</h2>
+        <h2>
+          Users (
+          {users.length})
+        </h2>
+
         {users.length === 0 ? (
           <p>No users found.</p>
         ) : (
           <ul className="admin-list">
-            {users.map(user => (
-              <li key={user._id} className="admin-item">
+            {users.map((u) => (
+              <li
+                key={u._id}
+                className="admin-item"
+              >
                 <span>
-                  <strong>{user.name || 'No Name'}</strong> ({user.email})
+                  <strong>
+                    {u.name ||
+                      'No Name'}
+                  </strong>{' '}
+                  ({u.email})
+                  {' • '}
+                  Role:{' '}
+                  {u.role ||
+                    'user'}
                 </span>
-                {user.email !== 'trysamrat1@gmail.com' && (
+
+                {u.email !==
+                  user.email && (
                   <button
                     className="delete-btn"
-                    onClick={() => deleteUser(user._id, user.email)}
+                    onClick={() =>
+                      deleteUser(
+                        u._id,
+                        u.email
+                      )
+                    }
                   >
                     Remove
                   </button>
@@ -116,31 +311,131 @@ const AdminPanel = () => {
         )}
       </section>
 
+      {/* CLUBS */}
       <section>
-        <h2>Clubs</h2>
+        <h2>
+          Clubs (
+          {clubs.length})
+        </h2>
+
         {clubs.length === 0 ? (
-          <p>No clubs available.</p>
+          <p>
+            No clubs available.
+          </p>
         ) : (
           <ul className="admin-list">
-            {clubs.map(club => (
-              <li key={club._id} className="admin-item">
+            {clubs.map((club) => (
+              <li
+                key={club._id}
+                className="admin-item"
+              >
                 <span>
-                  <strong>{club.name}</strong> - {club.members?.length || 0} members
+                  <strong>
+                    {club.name}
+                  </strong>{' '}
+                  -{' '}
+                  {club.members
+                    ?.length || 0}{' '}
+                  members
                 </span>
-                <button className="delete-btn" onClick={() => deleteClub(club._id)}>
+
+                <button
+                  className="delete-btn"
+                  onClick={() =>
+                    deleteClub(
+                      club._id
+                    )
+                  }
+                >
                   Delete Club
                 </button>
-                {club.joinRequests?.length > 0 && (
+
+                {club.joinRequests
+                  ?.length > 0 && (
                   <div className="join-requests">
-                    <strong>Pending Join Requests:</strong>
-                    {club.joinRequests.map(email => (
-                      <div key={email}>{email}</div>
-                    ))}
+                    <strong>
+                      Pending Join
+                      Requests:
+                    </strong>
+
+                    {club.joinRequests.map(
+                      (
+                        email
+                      ) => (
+                        <div
+                          key={
+                            email
+                          }
+                        >
+                          {email}
+                        </div>
+                      )
+                    )}
                   </div>
                 )}
               </li>
             ))}
           </ul>
+        )}
+      </section>
+
+      {/* ANIME */}
+      <section>
+        <h2>
+          Anime Library (
+          {animeList.length})
+        </h2>
+
+        {animeList.length === 0 ? (
+          <p>
+            No anime available.
+          </p>
+        ) : (
+          <div className="anime-grid">
+            {animeList.map(
+              (anime) => (
+                <div
+                  key={anime._id}
+                  className="anime-card"
+                >
+                  <img
+                    src={
+                      anime.image ||
+                      anime.images?.jpg
+                        ?.image_url
+                    }
+                    alt={
+                      anime.title
+                    }
+                  />
+
+                  <div className="anime-info">
+                    <h4>
+                      {
+                        anime.title
+                      }
+                    </h4>
+
+                    <p>
+                      {
+                        anime.genre
+                      }{' '}
+                      •{' '}
+                      {
+                        anime.year
+                      }
+                    </p>
+
+                    <p>
+                      Rating:{' '}
+                      {anime.score ||
+                        'N/A'}
+                    </p>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
         )}
       </section>
     </div>

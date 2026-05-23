@@ -1,38 +1,117 @@
-/*anime-tracker\frontend\src\components\poll.css */
+/* ════════════════════════════════════════
+   Poll.css  — Community Polls component
+   Add  import './Poll.css'  to Poll.js
+   and  import './Polls.css' or put page
+   wrapper styles in the parent component.
+════════════════════════════════════════ */
 
-.poll-container {
-  border: 1px solid #ddd;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+/* ── Page wrapper (Polls.js renders <div>) ── */
+.polls-page {
+  padding: 28px;
+  min-height: 100vh;
+  background: var(--bg);
 }
 
-.poll-options {
+.polls-page h2 {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Single poll card ── */
+.poll-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  max-width: 560px;
+}
+
+.poll-card-question {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+
+/* ── Option row ── */
+.poll-card-option {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.poll-option {
-  padding: 0.6rem 1rem;
-  background: #e0e0e0;
-  border-radius: 6px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+  overflow: hidden;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: border-color 0.15s;
 }
 
-.poll-option:hover {
-  background: #ccc;
+.poll-card-option:hover { border-color: rgba(74,158,255,0.3); }
+
+/* Progress bar behind row */
+.poll-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(74,158,255,0.1);
+  border-radius: 8px;
+  transition: width 0.4s ease;
+  z-index: 0;
 }
 
-.poll-option.voted {
-  background: #4caf50;
-  color: white;
+.poll-card-option span,
+.poll-card-option button {
+  position: relative;
+  z-index: 1;
 }
 
-.thank-you {
-  color: #388e3c;
-  margin-top: 1rem;
+.poll-option-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.poll-option-votes {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.poll-vote-btn {
+  background: rgba(74,158,255,0.12);
+  color: #4a9eff;
+  border: 1px solid rgba(74,158,255,0.28);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.poll-vote-btn:hover { opacity: 0.8; }
+
+@media (max-width: 600px) {
+  .polls-page { padding: 16px; }
+  .poll-card  { padding: 14px; }
 }

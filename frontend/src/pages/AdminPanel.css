@@ -1,54 +1,202 @@
-/*frontend\src\pages\AdminPanel.css*/
+/* =========================
+   ADMIN DASHBOARD
+========================= */
+
 .admin-container {
-    margin-left: 65px;
-    margin-right: 65px;
-    padding: 2rem;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .admin-container.light {
-    background-color: #f9f9f9;
-    color: #222;
-  }
-  
-  .admin-container.dark {
-    background-color: #121212;
-    color: #eee;
-  }
-  
-  .admin-list {
-    list-style: none;
-    padding: 0;
-    margin: 1rem 0;
-  }
-  
-  .admin-item {
-    background: rgba(0, 0, 0, 0.05);
-    margin-bottom: 1rem;
+  padding: 2rem;
+  color: white;
+  min-height: 100vh;
+  background: #0f172a;
+}
+
+.admin-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #38bdf8;
+  text-align: center;
+}
+
+.admin-container section {
+  margin-bottom: 3rem;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.admin-summary h2,
+.admin-container h2 {
+  margin-bottom: 1rem;
+  color: #f8fafc;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
+  gap: 1rem;
+}
+
+.summary-card {
+  background: #1e293b;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px
+    rgba(0, 0, 0, 0.3);
+  transition: 0.3s ease;
+  border: 1px solid
+    rgba(255, 255, 255, 0.08);
+}
+
+.summary-card:hover {
+  transform: translateY(-5px);
+}
+
+.summary-card h3 {
+  font-size: 1rem;
+  color: #94a3b8;
+  margin-bottom: 0.7rem;
+}
+
+.summary-card p {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #38bdf8;
+}
+
+/* =========================
+   USERS & CLUBS
+========================= */
+
+.admin-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-item {
+  background: #1e293b;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.08);
+}
+
+.admin-item span {
+  color: #f8fafc;
+  font-size: 0.95rem;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 600;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+.join-requests {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.8rem;
+  background: rgba(
+    255,
+    255,
+    255,
+    0.04
+  );
+  border-radius: 10px;
+  color: #cbd5e1;
+}
+
+/* =========================
+   ANIME GRID
+========================= */
+
+.anime-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(220px, 1fr)
+  );
+  gap: 1.5rem;
+}
+
+.anime-card {
+  background: #1e293b;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: 0.3s ease;
+  border: 1px solid
+    rgba(255, 255, 255, 0.08);
+}
+
+.anime-card:hover {
+  transform: translateY(-5px);
+}
+
+.anime-card img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+.anime-info {
+  padding: 1rem;
+}
+
+.anime-info h4 {
+  margin-bottom: 0.5rem;
+  color: white;
+  font-size: 1rem;
+}
+
+.anime-info p {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  .admin-container {
     padding: 1rem;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.3s;
   }
-  
-  .admin-container.dark .admin-item {
-    background: rgba(255, 255, 255, 0.1);
+
+  .admin-container h1 {
+    font-size: 2rem;
   }
-  
-  .admin-item button {
-    background: #ff4d4d;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    color: white;
-    cursor: pointer;
-    transition: background 0.3s;
+
+  .summary-card p {
+    font-size: 1.5rem;
   }
-  
-  .admin-item button:hover {
-    background: #ff1a1a;
-    color: black
+
+  .anime-card img {
+    height: 260px;
   }
-  
+
+  .admin-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}

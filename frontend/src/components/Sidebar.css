@@ -1,227 +1,232 @@
-/* =========================
-   APP LAYOUT
-========================= */
+/* ════════════════════════════════════════
+   Sidebar.css  — v2
+   Collapsed: 60px icons only
+   Expanded:  200px icons + labels
+════════════════════════════════════════ */
 
-.app-container {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-}
-
-/* =========================
-   SIDEBAR
-========================= */
-
+/* ── Shell ── */
 .sidebar {
-  height: 100vh;
-  background-color: #ff4c4c;
-  color: white;
-  transition: width 0.3s ease;
-  overflow: hidden;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  height: 100vh;
+  background: var(--red);
   display: flex;
   flex-direction: column;
+  z-index: 300;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.2);
 }
 
-.sidebar.expanded {
-  width: 170px;
-}
+.sidebar.expanded  { width: 200px; }
+.sidebar.collapsed { width: 60px; }
 
-.sidebar.collapsed {
-  width: 70px;
-}
-
-/* =========================
-   MAIN CONTENT FIX
-========================= */
-
-.main-content {
-  flex: 1;
-  min-height: 100vh;
-  padding: 20px;
-  transition: margin-left 0.3s ease;
-  background: #f5f5f5;
-
-  /* IMPORTANT */
-  margin-left: 170px;
-}
-
-/* when sidebar collapsed */
-.sidebar.collapsed ~ .main-content {
-  margin-left: 70px;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.sidebar-header {
-  position: relative;
-  padding: 20px 16px 10px;
+/* ── Toggle button row ── */
+.sidebar-top {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
+  padding: 10px 10px 4px;
+  flex-shrink: 0;
+}
+
+.sidebar-toggle-btn {
+  background: rgba(0,0,0,0.2);
+  border: none;
+  border-radius: 7px;
+  color: rgba(255,255,255,0.9);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.sidebar-toggle-btn:hover { background: rgba(0,0,0,0.32); }
+
+/* ── Profile header ── */
+.sidebar-header {
+  padding: 6px 10px 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.18);
+  flex-shrink: 0;
 }
 
 .profile-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
+  min-width: 0;
 }
 
 .profile-wrapper-collapsed {
   display: flex;
-  align-items: center;
   justify-content: center;
-  width: 100%;
 }
 
 .logo-circle {
-  width: 50px;
-  height: 50px;
-  background-color: white;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.28);
+  background: rgba(0,0,0,0.2);
 }
 
 .sidebar-avatar {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+  display: block;
 }
 
 .sidebar-user-name {
-  font-size: 16px;
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  min-width: 0;
 }
 
-/* =========================
-   MENU
-========================= */
-
+/* ── Nav list ── */
 .sidebar-menu {
   list-style: none;
-  padding: 0;
-  margin-top: 16px;
+  padding: 6px 0 0;
+  margin: 0;
   flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
+.sidebar-menu::-webkit-scrollbar { width: 0; }
+
+/* ── Menu item ── */
 .menu-item {
-  padding: 12px 20px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: background 0.2s;
+  position: relative;
 }
 
 .menu-item a,
-.menu-item button {
+.logout-link {
   display: flex;
   align-items: center;
-  color: white;
+  gap: 10px;
+  padding: 9px 0 9px 14px;
+  color: rgba(255,255,255,0.8);
   text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.13s, color 0.13s;
   width: 100%;
   background: none;
   border: none;
-  font: inherit;
-  cursor: pointer;
+  text-align: left;
+  line-height: 1;
 }
 
-.menu-item:hover {
-  background-color: #2d2d44;
-}
-
-.menu-item .icon {
-  margin-right: 12px;
-  display: flex;
+/* Collapsed: centre the icon */
+.sidebar.collapsed .menu-item a,
+.sidebar.collapsed .logout-link {
   justify-content: center;
-  align-items: center;
+  padding: 11px 0;
 }
 
-.menu-item .text {
-  white-space: nowrap;
-}
-
-.menu-item.active {
-  background-color: #383857;
-}
-
-/* =========================
-   LOGOUT
-========================= */
-
-.menu-item.logout:hover {
-  background-color: #441818;
-}
-
-.menu-item.logout:hover .icon,
-.menu-item.logout:hover .text {
-  color: #ff4c4c;
-}
-
-/* =========================
-   TOGGLE BUTTON
-========================= */
-
-.toggle-wrapper {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.sidebar-toggle-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  cursor: pointer;
+.menu-item a:hover,
+.logout-link:hover {
+  background: rgba(0,0,0,0.18);
   color: #fff;
-  transition: transform 0.2s ease;
-  padding: 0.5rem;
 }
 
-.sidebar-toggle-btn:hover {
-  transform: scale(1.1);
+/* ── Active state ── */
+.menu-item.active a {
+  background: rgba(0,0,0,0.25);
+  color: #fff;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+.menu-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  background: #fff;
+  border-radius: 0 3px 3px 0;
+}
 
+/* ── Icon wrapper ── */
+.menu-item .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  opacity: 0.88;
+}
+
+.menu-item.active .icon { opacity: 1; }
+
+/* ── Label text ── */
+.menu-item .text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+/* ── Section dividers ── */
+.menu-item:nth-child(2)::before,  /* after Profile */
+.menu-item:nth-child(8)::before { /* after Plan to Watch */
+  display: none; /* active indicator only */
+}
+
+.sidebar-menu .divider {
+  height: 1px;
+  background: rgba(0,0,0,0.15);
+  margin: 4px 10px;
+}
+
+/* ── Logout item ── */
+.menu-item.logout {
+  border-top: 1px solid rgba(0,0,0,0.15);
+  margin-top: 4px;
+}
+
+.menu-item.logout a,
+.logout-link {
+  color: rgba(255,255,255,0.65);
+}
+
+.menu-item.logout a:hover,
+.menu-item.logout .logout-link:hover {
+  background: rgba(0,0,0,0.22);
+  color: #fff;
+}
+
+/* ── Main content offset ─────────────────
+   Add these rules to App.css too          */
+/*
+.main-content { margin-left: 200px; transition: margin-left 0.25s ease; }
+body:has(.sidebar.collapsed) .main-content { margin-left: 60px; }
+body:has(.sidebar.mobile)    .main-content { margin-left: 60px; }
+*/
+
+/* ── Mobile ── */
 @media (max-width: 768px) {
-
-  .sidebar.expanded {
-    width: 70px;
+  .sidebar { z-index: 400; }
+  .sidebar.mobile.expanded  {
+    width: 200px;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.4);
   }
-
-  .sidebar.collapsed {
-    width: 70px;
-  }
-
-  .main-content {
-    margin-left: 70px;
-    padding: 15px;
-  }
-
-  .sidebar-user-name,
-  .text {
-    display: none;
-  }
-
-  .menu-item .icon {
-    margin-right: 0;
-  }
-
-  .menu-item {
-    justify-content: center;
-  }
+  .sidebar.mobile.collapsed { width: 60px; }
 }

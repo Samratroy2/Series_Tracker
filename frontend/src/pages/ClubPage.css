@@ -1,367 +1,584 @@
-/* Base Styles (Mobile First) */
+/* ════════════════════════════════════════
+   ClubPage.css  —  v2
+════════════════════════════════════════ */
+
 .club-wrapper {
   display: flex;
-  flex-direction: column; /* stacked for mobile */
   height: 100vh;
+  background: var(--bg);
   overflow: hidden;
-  background-color: #ece5dd;
-  color: #000;
-  padding-left: 35px; /* consistent left padding */
 }
 
-/* Sidebar */
+/* ════════════════════════════════════════
+   SIDEBAR
+════════════════════════════════════════ */
+
 .club-sidebar {
-  width: 100%;
-  background-color: #f0f2f5;
-  padding: 10px;
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  color: inherit;
+  overflow: hidden;
 }
 
-/* Sidebar Title */
 .club-sidebar h3 {
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: bold;
+  font-family: var(--font-title);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  padding: 16px 16px 10px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
-/* Create Club Section */
-.create-club {
+/* Create club input row */
+.club-sidebar .create-club {
   display: flex;
   gap: 6px;
-  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
-.create-club input {
+.club-sidebar .create-club input {
   flex: 1;
-  padding: 6px 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  border: 1px solid #ccc;
+  padding: 8px 10px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
   outline: none;
-  background-color: #fff;
-  color: #000;
+  min-width: 0;
+  transition: border-color 0.15s;
 }
 
-.create-club button {
-  padding: 6px 12px;
-  border-radius: 8px;
+.club-sidebar .create-club input::placeholder { color: var(--text-muted); }
+.club-sidebar .create-club input:focus { border-color: rgba(74,158,255,0.45); }
+
+.club-sidebar .create-club button {
+  background: var(--red);
+  color: #fff;
   border: none;
-  background-color: #128c7e;
-  color: #fff;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.create-club button:hover {
-  background-color: #075e54;
-}
-
-/* Club List Items */
-.club-item {
-  padding: 8px;
   border-radius: 8px;
+  padding: 8px 14px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 800;
   cursor: pointer;
-  transition: background 0.2s;
-  margin-bottom: 5px;
-  background-color: transparent;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
 }
 
+.club-sidebar .create-club button:hover { opacity: 0.88; }
+
+/* Club list */
+.club-sidebar {
+  overflow-y: auto;
+}
+
+.club-item {
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.club-item:hover    { background: var(--surface2); }
 .club-item.selected {
-  background-color: #128c7e;
-  color: #fff;
+  background: rgba(232,48,42,0.1);
+  color: var(--red);
+  border-left: 3px solid var(--red);
+  padding-left: 13px;
 }
 
-.club-item:hover {
-  background-color: #e6e6e6;
-}
+/* ════════════════════════════════════════
+   MAIN CHAT AREA
+════════════════════════════════════════ */
 
-/* Main Chat Area */
 .club-main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  margin-left: 35px; /* consistent left spacing */
+  min-width: 0;
+  background: var(--bg);
 }
 
+/* Header */
 .club-header {
-  background-color: #075e54;
-  color: #fff;
-  padding: 12px;
-  font-weight: bold;
+  padding: 14px 20px;
+  font-family: var(--font-title);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.club-main > p {
+  color: var(--text-muted);
+  font-size: 14px;
   text-align: center;
-  border-radius: 0 0 10px 10px;
+  margin-top: 60px;
 }
 
-/* Messages */
-.messages {
-  flex: 1;
-  padding: 12px;
+/* Join requests */
+.join-requests {
+  background: rgba(232,160,32,0.07);
+  border-bottom: 1px solid rgba(232,160,32,0.18);
+  padding: 10px 16px;
+  flex-shrink: 0;
+}
+
+.join-requests h4 {
+  font-family: var(--font-title);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.join-request-item {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  overflow-y: auto;
-  background-color: #e5ddd5;
-}
-
-.message {
-  max-width: 100%;
-  padding: 8px 10px;
-  border-radius: 18px;
-  word-wrap: break-word;
-}
-
-.message.own {
-  background-color: #dcf8c6;
-  align-self: flex-end;
-}
-
-.message.other {
-  background-color: white;
-  align-self: flex-start;
-}
-
-/* Message Header (User + Time) */
-.message-header {
-  display: flex;
+  align-items: center;
   justify-content: space-between;
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #555;
-}
-
-.message-header .time {
-  font-size: 0.75rem;
-  color: #888;
-}
-
-/* Send Message Section */
-.send-message {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid #ccc;
-  background-color: #f0f2f5;
-}
-
-.send-message input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #000;
-}
-
-.send-message button {
-  margin-left: 8px;
-  padding: 10px 14px;
-  border-radius: 50%;
-  border: none;
-  background-color: #128c7e;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.send-message button:hover {
-  background-color: #075e54;
-}
-
-.send-message .poll-button {
-  background-color: #ff9800;
-}
-
-.send-message .poll-button:hover {
-  background-color: #e68900;
-}
-
-/* Polls */
-.poll {
-  background-color: white;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 6px 0;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-.poll-question {
-  font-weight: bold;
+  gap: 10px;
   margin-bottom: 6px;
 }
 
-.poll-option {
+.join-request-item span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.join-request-item button {
+  background: rgba(46,200,120,0.12);
+  color: #2ec878;
+  border: 1px solid rgba(46,200,120,0.28);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+
+.join-request-item button:hover { opacity: 0.8; }
+
+/* ════════════════════════════════════════
+   MESSAGES SCROLL AREA
+════════════════════════════════════════ */
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.messages::-webkit-scrollbar { width: 4px; }
+.messages::-webkit-scrollbar-track { background: transparent; }
+.messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ════════════════════════════════════════
+   MESSAGE BUBBLES
+   .own  = current user → RIGHT
+   .other = others      → LEFT
+════════════════════════════════════════ */
+
+.message {
+  display: flex;
+  flex-direction: column;
+  max-width: 60%;
+}
+
+/* RIGHT — own messages */
+.message.own {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+/* LEFT — other messages */
+.message.other {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+/* Header: name + time */
+.message-header {
+  display: flex;
   align-items: center;
-  padding: 6px 8px;
-  margin: 4px 0;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
+.message.own   .message-header { flex-direction: row-reverse; }
+.message.other .message-header { flex-direction: row; }
+
+.message-header .user {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.message-header .time {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* Bubble */
+.message-text {
+  padding: 9px 13px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.45;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+/* Own bubble — blue, right-rounded */
+.message.own .message-text {
+  background: rgba(74,158,255,0.18);
+  border: 1px solid rgba(74,158,255,0.3);
+  border-radius: 14px 14px 2px 14px;
+}
+
+/* Other bubble — surface, left-rounded */
+.message.other .message-text {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px 14px 14px 2px;
+}
+
+/* ════════════════════════════════════════
+   POLL BUBBLES
+   Same own/other alignment as messages
+════════════════════════════════════════ */
+
+.poll {
+  display: flex;
+  flex-direction: column;
+  max-width: 340px;
+  min-width: 220px;
+}
+
+.poll.own   { align-self: flex-end;   align-items: flex-end; }
+
+/* .poll is the card itself */
+.poll {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.poll.other { align-self: flex-start; align-items: flex-start; }
+.poll.own { border-color: rgba(74,158,255,0.25); background: rgba(74,158,255,0.06); }
+
+/* Poll card */
+.poll-card-inner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  width: 100%;
+}
+
+.poll.own .poll-card-inner {
+  border-color: rgba(74,158,255,0.25);
+  background: rgba(74,158,255,0.06);
+}
+
+/* Poll header */
+.poll .message-header {
+  margin-bottom: 6px;
+}
+
+.poll.own   .message-header { flex-direction: row-reverse; }
+.poll.other .message-header { flex-direction: row; }
+
+/* Question text */
+.poll-question {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+/* ── Poll option row ── */
+.poll-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
   border-radius: 8px;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  transition: background 0.2s;
+  border: 1px solid var(--border);
+  margin-bottom: 6px;
+  overflow: hidden;
+  background: var(--surface2);
+  min-height: 36px;
 }
 
-.poll-option:hover {
-  background-color: #e6f7ff;
+.poll-option:last-child { margin-bottom: 0; }
+
+/* Animated fill bar — behind the text */
+.bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(90deg,
+    rgba(74,158,255,0.22) 0%,
+    rgba(74,158,255,0.08) 100%);
+  border-radius: 8px;
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  min-width: 3px;
+  z-index: 0;
 }
 
-.poll-option.voted {
-  background-color: #d1e7dd;
+/* Voted option gets a stronger bar */
+.poll-option.voted .bar {
+  background: linear-gradient(90deg,
+    rgba(232,160,32,0.28) 0%,
+    rgba(232,160,32,0.08) 100%);
 }
 
+/* Option label */
+.poll-option .label {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.poll-option.voted .label { color: var(--accent); }
+
+/* Vote count */
+.poll-option .votes {
+  position: relative;
+  z-index: 1;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Vote button */
 .poll-option button {
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: none;
-  background-color: #128c7e;
-  color: white;
+  position: relative;
+  z-index: 1;
+  background: rgba(74,158,255,0.15);
+  color: #4a9eff;
+  border: 1px solid rgba(74,158,255,0.3);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 800;
   cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+  white-space: nowrap;
 }
 
-.poll-option button:hover {
-  background-color: #075e54;
+.poll-option button:hover { opacity: 0.78; }
+
+/* ════════════════════════════════════════
+   SEND BAR
+════════════════════════════════════════ */
+
+.send-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
-/* Poll Creation Inputs */
+.send-message > input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 10px 16px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+  min-width: 0;
+  transition: border-color 0.15s;
+}
+
+.send-message > input::placeholder { color: var(--text-muted); }
+.send-message > input:focus { border-color: rgba(74,158,255,0.4); }
+
+/* Send button */
+.send-message > button:first-of-type {
+  background: var(--accent-blue);
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 9px 20px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+/* Poll icon button */
+.send-message > button:last-of-type {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.send-message > button:hover  { opacity: 0.85; }
+.send-message > button:active { transform: scale(0.95); }
+
+/* ── Poll creation panel ── */
 .poll-inputs {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 10px;
-  background-color: #f0f2f5;
-  border-top: 1px solid #ccc;
 }
 
 .poll-inputs input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 8px 12px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #000;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+  width: 100%;
+  transition: border-color 0.15s;
 }
 
-.poll-inputs button {
-  padding: 8px 12px;
-  border-radius: 12px;
-  border: none;
-  background-color: #128c7e;
-  color: white;
+.poll-inputs input::placeholder { color: var(--text-muted); }
+.poll-inputs input:focus { border-color: rgba(74,158,255,0.4); }
+
+.poll-inputs > div {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.poll-inputs > div button {
+  background: var(--surface2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 6px 12px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
-  margin-top: 4px;
+  transition: opacity 0.15s;
 }
 
-.poll-inputs button:hover {
-  background-color: #075e54;
+.poll-inputs > div button:nth-child(2) {
+  background: rgba(46,200,120,0.12);
+  color: #2ec878;
+  border-color: rgba(46,200,120,0.28);
 }
 
-/* Media Queries */
-@media screen and (min-width: 768px) {
-  .club-wrapper {
-    flex-direction: row;
-  }
-  .club-sidebar {
-    width: 250px;
-  }
-  .club-main {
-    margin-left: 35px;
-  }
+.poll-inputs > div button:nth-child(3) {
+  background: rgba(232,48,42,0.1);
+  color: var(--red);
+  border-color: rgba(232,48,42,0.25);
 }
 
-@media screen and (min-width: 1024px) {
-  .club-sidebar {
-    width: 300px;
-  }
-  .club-main {
-    margin-left: 35px;
-  }
+.poll-inputs > div button:hover { opacity: 0.8; }
+
+/* ── Back button (mobile) ── */
+.club-main > button {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 10px;
+  align-self: flex-start;
+  transition: opacity 0.15s;
 }
 
-/* Dark Mode */
-.dark .club-wrapper {
-  background-color: #121212;
-  color: #e0e0e0;
+/* Private join prompt */
+.club-main > div > p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 14px;
 }
 
-.dark .club-sidebar {
-  background-color: #1e1e1e;
-  color: #e0e0e0;
-}
-
-.dark .club-item.selected {
-  background-color: #00a884;
+.club-main > div > button {
+  background: var(--accent-blue);
   color: #fff;
+  border: none;
+  border-radius: 9px;
+  padding: 10px 22px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: opacity 0.15s;
 }
 
-.dark .club-main {
-  background-color: #121212;
-}
+.club-main > div > button:hover { opacity: 0.88; }
 
-.dark .messages {
-  background-color: #1e1e1e;
-}
-
-.dark .message.own {
-  background-color: #056162;
-  color: #fff;
-}
-
-.dark .message.other {
-  background-color: #2a2a2a;
-  color: #fff;
-}
-
-.dark .send-message {
-  background-color: #1e1e1e;
-}
-
-.dark .send-message input {
-  background-color: #2a2a2a;
-  color: #fff;
-  border: 1px solid #555;
-}
-
-.dark .send-message button {
-  background-color: #00a884;
-}
-
-.dark .send-message button:hover {
-  background-color: #056162;
-}
-
-.dark .poll {
-  background-color: #2a2a2a;
-}
-
-.dark .poll-option {
-  border: 1px solid #555;
-}
-
-.dark .poll-option.voted {
-  background-color: #056162;
-}
-
-.dark .poll-option button {
-  background-color: #00a884;
-}
-
-.dark .poll-option button:hover {
-  background-color: #056162;
-}
-
-.dark .poll-inputs {
-  background-color: #1e1e1e;
-}
-
-.dark .poll-inputs input {
-  background-color: #2a2a2a;
-  color: #fff;
-}
-
-.dark .poll-inputs button {
-  background-color: #00a884;
-}
-
-.dark .poll-inputs button:hover {
-  background-color: #056162;
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .club-sidebar { width: 100%; border-right: none; }
+  .message, .poll { max-width: 80%; }
 }

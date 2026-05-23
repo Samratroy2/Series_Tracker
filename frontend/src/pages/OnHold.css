@@ -1,116 +1,150 @@
+/* ════════════════════════════════════════
+   OnHold.css
+════════════════════════════════════════ */
+
 .onhold-container {
-  padding: 1rem;
+  padding: 28px;
+  min-height: 100vh;
+  background: var(--bg);
 }
 
 .onhold-container h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0%;
-  margin-bottom: 1rem;
-  margin-top: 1.3rem;
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.onhold-container > p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 40px;
+  text-align: center;
 }
 
 .remove-all-btn {
-  margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(232,48,42,0.12);
+  color: var(--red);
+  border: 1px solid rgba(232,48,42,0.28);
+  border-radius: 8px;
   padding: 8px 16px;
-  background-color: #e74c3c;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s ease;
+  margin-bottom: 24px;
+  transition: background 0.15s, transform 0.1s;
 }
 
-.remove-all-btn:hover {
-  background-color: #c0392b;
-}
+.remove-all-btn:hover  { background: rgba(232,48,42,0.2); }
+.remove-all-btn:active { transform: scale(0.97); }
 
-/* Horizontal scrollable list */
+/* ── Grid ── */
 .onhold-list {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
 }
 
-.onhold-list::-webkit-scrollbar {
-  height: 6px;
-}
-
-.onhold-list::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.3);
-  border-radius: 3px;
-}
-
-/* Card Style */
+/* ── Card ── */
 .onhold-card {
-  flex: 0 0 200px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 14px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  padding: 0.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .onhold-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.22);
 }
 
 .onhold-card img {
   width: 100%;
-  height: 280px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 5px;
+  display: block;
+  background: var(--surface2);
 }
 
 .onhold-card-info {
+  padding: 10px 12px 14px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-  margin-top: 0.5rem;
+  gap: 4px;
+  flex: 1;
 }
 
 .onhold-card-info h4 {
-  font-size: 1rem;
-  margin: 0;
-  font-weight: 600;
-  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
 }
 
 .onhold-card-info p {
-  font-size: 0.85rem;
-  color: #555;
-  margin: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-left: 2px solid rgba(232,160,32,0.35);
+  padding-left: 7px;
+  color: var(--accent);
+  margin: 0 0 8px;
 }
 
-.onhold-card-info button {
-  margin-top: 0.5rem;
-  padding: 5px 10px;
-  background-color: #cc0000;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
+/* ── Buttons ── */
+.onhold-card-buttons {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.onhold-card-buttons button {
+  flex: 1;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  padding: 7px 4px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
   cursor: pointer;
-  font-size: 0.85rem;
-  transition: background 0.2s ease;
+  background: var(--surface2);
+  color: var(--text-muted);
+  transition: opacity 0.15s, transform 0.1s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.onhold-card-info button:hover {
-  background-color: #990000;
+.onhold-card-buttons button:first-child {
+  background: rgba(74,158,255,0.12);
+  color: #4a9eff;
+  border-color: rgba(74,158,255,0.28);
 }
 
-/* Responsive */
-@media screen and (max-width: 600px) {
-  .onhold-card {
-    flex: 0 0 150px;
-  }
+.onhold-card-buttons button:last-child {
+  background: rgba(232,48,42,0.1);
+  color: #e8302a;
+  border-color: rgba(232,48,42,0.25);
+}
 
-  .onhold-card img {
-    height: 200px;
-  }
+.onhold-card-buttons button:hover  { opacity: 0.8; }
+.onhold-card-buttons button:active { transform: scale(0.96); }
+
+@media (max-width: 600px) {
+  .onhold-container { padding: 16px; }
+  .onhold-list { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .onhold-card img { height: 160px; }
 }

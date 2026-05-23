@@ -1,290 +1,183 @@
-/* Container */
+/* ════════════════════════════════════════
+   Watching.css
+════════════════════════════════════════ */
+
 .watching-container {
-  padding: 1rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 28px;
+  min-height: 100vh;
+  background: var(--bg);
 }
 
 .watching-container h2 {
-  font-size: 1.5rem;
-  margin: 1.2rem 0 1rem 0;
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin-bottom: 20px;
 }
 
-/* Remove All Button */
+.watching-container > p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+/* ── Remove All ── */
 .remove-all-btn {
-  margin-bottom: 1rem;
-  padding: 8px 16px;
-  background-color: #e74c3c;
-  color: #fff;
-  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(232, 48, 42, 0.12);
+  color: var(--red);
+  border: 1px solid rgba(232, 48, 42, 0.28);
   border-radius: 8px;
+  padding: 8px 16px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s ease, transform 0.2s ease;
+  margin-bottom: 24px;
+  transition: background 0.15s, transform 0.1s;
 }
 
-.remove-all-btn:hover {
-  background-color: #c0392b;
-  transform: translateY(-2px);
-}
+.remove-all-btn:hover  { background: rgba(232, 48, 42, 0.2); }
+.remove-all-btn:active { transform: scale(0.97); }
 
-/* Watching List */
+/* ── Grid ── */
 .watching-list {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-  scroll-behavior: smooth;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
 }
 
-.watching-list::-webkit-scrollbar {
-  height: 6px;
-}
-
-.watching-list::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.3);
-  border-radius: 3px;
-}
-
-.watching-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* Anime Card */
+/* ── Card ── */
 .watching-card {
-  flex: 0 0 200px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background: #f9f9f9;
-  border-radius: 12px;
-  padding: 0.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .watching-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.25);
 }
 
-.home.dark .watching-card {
-  background-color: #1e1e1e;
-  color: #f0f0f0;
-}
-
-/* Anime Image */
 .watching-card img {
   width: 100%;
-  height: 280px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 8px;
+  display: block;
+  background: var(--surface2);
 }
 
-/* Title */
 .watching-card h4 {
-  margin: 0.5rem 0;
-  font-size: 1rem;
-  text-align: center;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  padding: 10px 12px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Episode Controls */
+/* status stripe */
+.watching-card.status-watching { border-top: 3px solid #4a9eff; }
+.watching-card.status-plan     { border-top: 3px solid var(--accent); }
+
+/* ── Episode Controls ── */
 .episode-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 5px 0;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--surface2);
+  margin: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.episode-controls span {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 60px;
+  text-align: center;
 }
 
 .episode-controls button {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: none;
-  background-color: #3498db;
-  color: #fff;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.episode-controls button:hover {
-  background-color: #2980b9;
-  transform: translateY(-2px);
-}
-
-/* Episodes Watched Badge */
-.episode-badge {
-  font-weight: 600;
-  color: #fff;
-  padding: 4px 8px;
+  width: 28px;
+  height: 28px;
   border-radius: 6px;
-  font-size: 1rem;
-  min-width: 50px;
-  text-align: center;
-  display: inline-block;
-  background-color: #e74c3c;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, transform 0.1s;
+  line-height: 1;
 }
 
-/* Status Buttons */
+.episode-controls button:hover  { background: var(--surface2); border-color: rgba(255,255,255,0.2); }
+.episode-controls button:active { transform: scale(0.93); }
+
+/* ── Status Buttons ── */
 .status-buttons {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 6px;
-  margin-top: 10px;
-  width: 100%;
+  padding: 8px 10px 12px;
 }
 
 .status-buttons button {
-  padding: 6px 10px;
-  border: none;
-  border-radius: 6px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  padding: 7px 4px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  transition: background 0.2s ease, transform 0.2s ease;
-  background-color: #3498db;
-  color: #fff;
+  background: var(--surface2);
+  color: var(--text-muted);
+  transition: opacity 0.15s, transform 0.1s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.status-buttons button:hover {
-  transform: translateY(-1px);
-}
+.status-buttons button:hover  { opacity: 0.8; color: var(--text); }
+.status-buttons button:active { transform: scale(0.96); }
 
 .status-buttons button.danger {
-  background-color: #e74c3c;
+  background: rgba(232,48,42,0.1);
+  color: #e8302a;
+  border-color: rgba(232,48,42,0.25);
 }
 
-.status-buttons button.danger:hover {
-  background-color: #c0392b;
+.status-buttons button.complete-btn {
+  background: rgba(46,200,120,0.1);
+  color: #2ec878;
+  border-color: rgba(46,200,120,0.25);
 }
 
 .status-buttons button.grey {
-  background-color: #7f8c8d;
+  background: var(--surface2);
+  color: var(--text-muted);
 }
 
-.status-buttons button.grey:hover {
-  background-color: #606c76;
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .watching-container { padding: 16px; }
+  .watching-list { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .watching-card img { height: 160px; }
 }
-
-/* Dark Mode Overrides */
-.home.dark .remove-all-btn {
-  background-color: #c0392b;
-}
-
-.home.dark .episode-badge {
-  background-color: #e74c3c;
-}
-
-.home.dark .status-buttons button {
-  background-color: #3498db;
-}
-
-.home.dark .status-buttons button.danger {
-  background-color: #e74c3c;
-}
-
-.home.dark .status-buttons button.grey {
-  background-color: #7f8c8d;
-}
-
-.dark .watching-container {
-  color: #f0f0f0;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-/* Responsive */
-@media screen and (max-width: 600px) {
-  .watching-card {
-    flex: 0 0 140px;
-    padding: 0.4rem;
-    border-radius: 10px;
-    min-height: 250px;
-  }
-
-  .watching-card img {
-    height: 180px;
-  }
-
-  .watching-card h4 {
-    font-size: 0.95rem;
-    margin: 0.4rem 0;
-  }
-
-  .episode-controls {
-    gap: 6px;
-  }
-
-  .episode-controls button {
-    width: 26px;
-    height: 26px;
-    font-size: 1rem;
-  }
-
-  .episode-badge {
-    font-size: 0.85rem;
-    min-width: 40px;
-    padding: 3px 6px;
-  }
-
-  .status-buttons {
-    gap: 5px;
-  }
-
-  .status-buttons button {
-    font-size: 11px;
-    padding: 4px 6px;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  .watching-card {
-    flex: 0 0 120px;
-    min-height: 220px;
-    min-width: 10rem;
-  }
-
-  .watching-card img {
-    height: 10rem;
-  }
-
-  .watching-card h4 {
-    font-size: 0.85rem;
-  }
-
-  .episode-controls button {
-    width: 24px;
-    height: 24px;
-    font-size: 0.9rem;
-  }
-
-  .episode-badge {
-    font-size: 0.75rem;
-    min-width: 35px;
-  }
-
-  .status-buttons button {
-    font-size: 10px;
-    padding: 3px 5px;
-  }
-}
-/* Default card */
-.watching-card {
-  flex: 0 0 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 12px;
-  padding: 0.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
-  position: relative;
-  background-color: #f9f9f9; /* default light */
-  color: #333;
-}
-
-/* Dark mode default */
-.home.dark .watching-card {
-  background-color: #1e1e1e;
-  color: #f0f0f0;
-}
-

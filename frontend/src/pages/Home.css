@@ -1,281 +1,989 @@
-/* =========================
-   HOME
-========================= */
+/* ════════════════════════════════════════
+   Home.css  — Complete
+   All classes used in Home.js
+════════════════════════════════════════ */
 
+/* ── Page wrapper ── */
 .home {
-  padding: 20px;
+  padding: 0 0 60px;
   min-height: 100vh;
+  background: var(--bg);
+  transition: background 0.3s;
 }
 
-.home.light {
-  background: #f5f5f5;
-  color: #111;
+/* ════════════════════════════════════════
+   TOP BAR
+════════════════════════════════════════ */
+
+.home-topbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 28px 28px 20px;
+  gap: 16px;
 }
 
-.home.dark {
-  background: #111827;
-  color: white;
+.home-topbar__left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-/* =========================
-   ADD BUTTON
-========================= */
+.home-greeting {
+  font-family: var(--font-body);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.home-greeting span { color: var(--red); }
+
+.home-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  font-weight: 500;
+}
 
 .toggle-form-btn {
-  background: #2563eb;
-  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-blue);
+  color: #fff;
   border: none;
-  padding: 12px 18px;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 600;
+  border-radius: 9px;
+  padding: 10px 20px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 800;
   cursor: pointer;
-  margin-bottom: 25px;
-  transition: 0.3s;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  transition: opacity 0.15s, transform 0.1s;
+  white-space: nowrap;
 }
 
-.toggle-form-btn:hover {
-  background: #1d4ed8;
-  transform: translateY(-2px);
-}
+.toggle-form-btn:hover  { opacity: 0.88; }
+.toggle-form-btn:active { transform: scale(0.97); }
 
-/* =========================
-   GRID
-========================= */
+/* ════════════════════════════════════════
+   HERO BANNER
+════════════════════════════════════════ */
 
-.anime-grid {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(230px, 1fr)
-  );
-  gap: 24px;
-}
-
-/* =========================
-   CARD
-========================= */
-
-.anime-card {
-  background: #1f2937;
+.hero-banner {
+  margin: 0 28px 32px;
   border-radius: 16px;
+  height: 360px;
+  position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  transition: 0.3s;
+  cursor: pointer;
+  border: 1px solid var(--border);
 }
 
-.home.light .anime-card {
-  background: white;
-}
-
-.anime-card:hover {
-  transform: translateY(-6px);
-}
-
-.anime-image {
+.hero-banner__img {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 320px;
+  height: 100%;
   object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.4s ease;
 }
 
-/* =========================
-   INFO
-========================= */
+.hero-banner:hover .hero-banner__img { transform: scale(1.03); }
 
-.anime-info {
-  padding: 16px;
+.hero-banner__gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.05) 100%),
+    linear-gradient(to top,   rgba(0,0,0,0.55) 0%, transparent 60%);
+  z-index: 1;
 }
 
-.anime-info h3 {
-  font-size: 20px;
+.hero-banner__glass {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 32px 36px;
+  max-width: 520px;
+  z-index: 2;
+}
+
+.hero-banner__tag {
+  display: inline-block;
+  font-family: var(--font-title);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(232,160,32,0.45);
+  border-radius: 4px;
+  padding: 3px 10px;
   margin-bottom: 10px;
 }
 
-.anime-info p {
-  margin: 6px 0;
-  font-size: 14px;
-  color: #cbd5e1;
+.hero-banner__title {
+  font-family: var(--font-title);
+  font-size: 30px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
 }
 
-.home.light .anime-info p {
-  color: #555;
+.hero-banner__meta {
+  font-size: 13px;
+  color: rgba(255,255,255,0.65);
+  margin: 0 0 18px;
+  font-weight: 500;
 }
 
-/* =========================
-   STATUS BUTTONS
-========================= */
-
-.anime-action-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.status-btn {
+.hero-banner__btn {
+  background: var(--red);
+  color: #fff;
   border: none;
-  padding: 10px;
-  border-radius: 10px;
+  border-radius: 8px;
+  padding: 9px 24px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 800;
   cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.hero-banner__btn:hover  { opacity: 0.88; }
+.hero-banner__btn:active { transform: scale(0.97); }
+
+/* ════════════════════════════════════════
+   SECTION
+════════════════════════════════════════ */
+
+.home-section {
+  margin-bottom: 32px;
+  padding: 0 28px;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-family: var(--font-title);
   font-size: 14px;
   font-weight: 600;
-  transition: 0.3s;
-  color: white;
-  background: #374151;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin: 0;
 }
 
-.status-btn:hover {
-  transform: scale(1.03);
+.section-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2px 10px;
+  white-space: nowrap;
 }
 
-/* ACTIVE STATES */
-
-.active-watching {
-  background: #2563eb;
+/* AI badge variant */
+.section-badge.ai-badge {
+  background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(74,158,255,0.15));
+  border-color: rgba(139,92,246,0.35);
+  color: #a78bfa;
+  font-weight: 800;
 }
 
-.active-plan {
-  background: #7c3aed;
+/* ── Horizontal scroll strip ── */
+.section-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
-.active-completed {
-  background: #16a34a;
+.section-scroll::-webkit-scrollbar        { height: 3px; }
+.section-scroll::-webkit-scrollbar-track  { background: transparent; }
+.section-scroll::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 4px; }
+
+/* ════════════════════════════════════════
+   SCROLL CARD  (.sc-card)
+════════════════════════════════════════ */
+
+.sc-card {
+  flex-shrink: 0;
+  width: 130px;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: transform 0.2s;
 }
 
-.active-hold {
-  background: #f59e0b;
-  color: black;
+.sc-card:hover { transform: translateY(-5px); }
+
+.sc-card__img-wrap {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 2 / 3;
+  background: var(--surface2);
+  border: 1px solid var(--border);
 }
 
-.active-drop {
-  background: #dc2626;
+.sc-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.3s;
 }
 
-/* =========================
-   EPISODE CONTROLS
-========================= */
+.sc-card:hover .sc-card__img { transform: scale(1.05); }
 
-.episode-controls {
-  margin-top: 15px;
+.sc-card__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 22px 8px 6px;
+  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+}
+
+.sc-card__score {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.sc-card__type-tag {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 6px;
+  backdrop-filter: blur(4px);
+}
+
+.sc-card__info {
+  padding: 7px 2px 0;
+}
+
+.sc-card__title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 0 2px;
+}
+
+.sc-card__sub {
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════
+   AI REFRESH BUTTON
+════════════════════════════════════════ */
+
+.ai-refresh-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, transform 0.3s;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.ai-refresh-btn:hover:not(:disabled) {
+  color: #a78bfa;
+  border-color: rgba(139,92,246,0.4);
+}
+
+.ai-refresh-btn:not(:disabled):active { transform: rotate(180deg); }
+.ai-refresh-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* AI loading dots */
+.ai-recs-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 30px 0;
+}
+
+.ai-recs-loading p {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 0;
+}
+
+.ai-recs-loading__dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.ai-recs-loading__dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #4a9eff);
+  animation: aiDotBounce 1.2s ease-in-out infinite;
+}
+
+.ai-recs-loading__dots span:nth-child(2) { animation-delay: 0.2s; }
+.ai-recs-loading__dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes aiDotBounce {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
+  40%           { transform: scale(1.2); opacity: 1; }
+}
+
+.ai-recs-error {
+  font-size: 12px;
+  color: #e8302a;
+  font-weight: 700;
+  padding: 8px 0;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════
+   ALL TITLES GRID  (.anime-card)
+════════════════════════════════════════ */
+
+.anime-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 18px;
+}
+
+.anime-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.anime-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 32px rgba(0,0,0,0.22);
+  border-color: rgba(255,255,255,0.14);
+}
+
+.anime-card .anime-image {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  background: var(--surface2);
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.anime-card:hover .anime-image { transform: scale(1.03); }
+
+.anime-card .anime-info {
+  padding: 11px 13px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.anime-card .anime-info h3 {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 0 4px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.anime-card .anime-info h3:hover { color: var(--accent-blue); }
+
+.anime-card .anime-info p {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-left: 2px solid var(--border);
+  padding-left: 6px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.anime-card .anime-info p:last-of-type {
+  color: var(--accent);
+  border-left-color: rgba(232,160,32,0.35);
+}
+
+/* ════════════════════════════════════════
+   EPISODE PROGRESS
+════════════════════════════════════════ */
+
+.ep-progress-wrap {
+  margin: 7px 0 3px;
+}
+
+/* Progress track */
+.ep-progress {
+  height: 4px;
+  background: var(--surface2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 5px;
+  border: 1px solid var(--border);
+}
+
+/* Fill bar */
+.ep-progress__bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4a9eff 0%, #a78bfa 100%);
+  border-radius: 4px;
+  transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  min-width: 3px;
+}
+
+.ep-progress__controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 6px;
 }
 
-.episode-controls button {
-  width: 38px;
-  height: 38px;
-  border: none;
-  border-radius: 10px;
-  background: #2563eb;
-  color: white;
-  font-size: 20px;
+.ep-count {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.ep-btn {
+  background: rgba(74,158,255,0.14);
+  color: #4a9eff;
+  border: 1px solid rgba(74,158,255,0.3);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 800;
   cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s, transform 0.1s;
 }
 
-.episode-controls span {
-  font-size: 15px;
-  font-weight: 600;
+.ep-btn:hover  { opacity: 0.8; }
+.ep-btn:active { transform: scale(0.95); }
+
+/* ════════════════════════════════════════
+   STATUS BUTTONS
+════════════════════════════════════════ */
+
+.anime-action-buttons {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+  flex-wrap: wrap;
 }
 
-/* =========================
-   MODAL
-========================= */
+.status-btn {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 6px 4px;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  background: var(--surface2);
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.15s, transform 0.1s, background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.status-btn:hover:not(:disabled) {
+  opacity: 0.85;
+  color: var(--text);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.status-btn:active:not(:disabled) { transform: scale(0.95); }
+
+.status-btn:disabled {
+  opacity: 0.22;
+  cursor: not-allowed;
+}
+
+/* Watching — blue */
+.status-btn.active-watching {
+  background: rgba(74,158,255,0.15);
+  color: #4a9eff;
+  border-color: rgba(74,158,255,0.38);
+}
+
+/* Plan to Watch — amber */
+.status-btn.active-plan {
+  background: rgba(232,160,32,0.13);
+  color: var(--accent);
+  border-color: rgba(232,160,32,0.35);
+}
+
+/* Dropped — red */
+.status-btn.active-dropped {
+  background: rgba(232,48,42,0.12);
+  color: #e8302a;
+  border-color: rgba(232,48,42,0.32);
+}
+
+/* Complete — green */
+.status-btn.active-complete {
+  background: rgba(46,200,120,0.13);
+  color: #2ec878;
+  border-color: rgba(46,200,120,0.32);
+}
+
+/* ════════════════════════════════════════
+   COMPLETED BADGE
+════════════════════════════════════════ */
+
+.completed-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #2ec878;
+}
+
+.user-rating-badge {
+  background: rgba(232,160,32,0.13);
+  color: var(--accent);
+  border: 1px solid rgba(232,160,32,0.3);
+  border-radius: 20px;
+  padding: 1px 8px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* ════════════════════════════════════════
+   MODAL SHARED
+════════════════════════════════════════ */
 
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.64);
+  backdrop-filter: blur(5px);
+  z-index: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  padding: 20px;
 }
+
+/* ════════════════════════════════════════
+   ADD ANIME MODAL
+════════════════════════════════════════ */
 
 .modal-content {
-  background: #1f2937;
-  padding: 25px;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 18px;
-  width: 90%;
-  max-width: 500px;
-}
-
-.home.light .modal-content {
-  background: white;
+  padding: 28px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.42);
 }
 
 .modal-content h2 {
-  margin-bottom: 20px;
-  text-align: center;
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 20px;
+  letter-spacing: 0.06em;
 }
 
-/* =========================
-   FORM
-========================= */
-
 .form-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
 .form-grid input,
 .form-grid select {
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
   outline: none;
-  font-size: 15px;
-  background: #374151;
-  color: white;
+  width: 100%;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  appearance: none;
 }
 
-.home.light .form-grid input,
-.home.light .form-grid select {
-  background: #f3f4f6;
-  color: black;
+.form-grid input::placeholder {
+  color: var(--text-muted);
+  text-transform: capitalize;
 }
+
+.form-grid input:focus,
+.form-grid select:focus {
+  border-color: rgba(74,158,255,0.5);
+  box-shadow: 0 0 0 3px rgba(74,158,255,0.1);
+}
+
+.form-grid select option { background: var(--surface); color: var(--text); }
+
+.form-grid input[name="title"],
+.form-grid input[name="image"] { grid-column: 1 / -1; }
 
 .submit-btn {
-  background: #16a34a;
-  color: white;
+  grid-column: 1 / -1;
+  background: var(--red);
+  color: #fff;
   border: none;
-  padding: 12px;
+  border-radius: 9px;
+  padding: 11px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.submit-btn:hover  { opacity: 0.88; }
+.submit-btn:active { transform: scale(0.98); }
+.submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ════════════════════════════════════════
+   QUICK-VIEW MODAL  (.qv-*)
+════════════════════════════════════════ */
+
+.qv-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 28px 70px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.qv-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(0,0,0,0.35);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: background 0.15s;
+}
+
+.qv-close:hover { background: rgba(0,0,0,0.55); }
+
+.qv-inner {
+  display: grid;
+  grid-template-columns: 185px 1fr;
+}
+
+.qv-img {
+  width: 185px;
+  height: 278px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.qv-info {
+  padding: 22px 22px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.qv-type {
+  font-family: var(--font-title);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.qv-title {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 4px;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.qv-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  margin-bottom: 4px;
+}
+
+.qv-meta-item {
+  border-left: 2px solid var(--border);
+  padding-left: 8px;
+}
+
+.qv-meta-label {
+  font-family: var(--font-title);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 2px;
+  font-weight: 400;
+}
+
+.qv-meta-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Episode row in modal */
+.qv-ep-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 12px;
+  background: var(--surface2);
   border-radius: 10px;
-  font-size: 15px;
+  border: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+
+.qv-ep-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* User rating in modal */
+.qv-user-rating {
+  margin-bottom: 4px;
+}
+
+.qv-user-rating .qv-meta-label { margin-bottom: 6px; }
+
+/* Actions row */
+.qv-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.qv-actions .status-btn {
+  font-size: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+/* ════════════════════════════════════════
+   STAR RATING
+════════════════════════════════════════ */
+
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.star {
+  font-size: 20px;
+  color: var(--border);
+  cursor: pointer;
+  transition: color 0.1s, transform 0.1s;
+  line-height: 1;
+  user-select: none;
+}
+
+.star.filled { color: var(--accent); }
+.star:hover  { transform: scale(1.25); }
+
+.star-label {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--accent);
+  margin-left: 8px;
+}
+
+/* ════════════════════════════════════════
+   RATING MODAL
+════════════════════════════════════════ */
+
+.rating-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 28px 70px rgba(0,0,0,0.45);
+}
+
+.rating-modal__title {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin: 0 0 6px;
+}
+
+.rating-modal__sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin: 0 0 24px;
+}
+
+.rating-modal .star-rating { justify-content: center; margin-bottom: 28px; }
+.rating-modal .star         { font-size: 26px; }
+
+.rating-modal__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.rating-modal__actions .submit-btn {
+  grid-column: unset;
+  margin-top: 0;
+  padding: 10px 28px;
+  min-width: 130px;
+  border-radius: 10px;
+}
+
+.grey-btn {
+  background: var(--surface2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-family: var(--font-body);
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: 0.3s;
+  transition: opacity 0.15s;
 }
 
-.submit-btn:hover {
-  background: #15803d;
+.grey-btn:hover { opacity: 0.8; }
+
+/* ════════════════════════════════════════
+   LIGHT MODE
+════════════════════════════════════════ */
+
+body:not(.dark-mode) .anime-card         { box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+body:not(.dark-mode) .anime-card:hover   { box-shadow: 0 12px 28px rgba(0,0,0,0.13); }
+body:not(.dark-mode) .hero-banner        { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+body:not(.dark-mode) .sc-card__img-wrap  { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+body:not(.dark-mode) .status-btn         { background: #ebebf4; }
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .home-topbar   { padding: 20px 16px 14px; }
+  .hero-banner   { margin: 0 16px 24px; height: 240px; border-radius: 12px; }
+  .hero-banner__title { font-size: 22px; }
+  .hero-banner__glass { padding: 20px; }
+  .home-section  { padding: 0 16px; }
+  .anime-grid    { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 13px; }
+  .anime-card .anime-image { height: 185px; }
 }
 
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 768px) {
-
-  .anime-grid {
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(170px, 1fr)
-    );
-  }
-
-  .anime-image {
-    height: 250px;
-  }
-
-  .anime-info h3 {
-    font-size: 17px;
-  }
-
-  .status-btn {
-    font-size: 13px;
-    padding: 9px;
-  }
+@media (max-width: 600px) {
+  .home-topbar { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .toggle-form-btn { width: 100%; justify-content: center; }
+  .hero-banner { height: 190px; }
+  .hero-banner__title { font-size: 16px; }
+  .qv-inner { grid-template-columns: 1fr; }
+  .qv-img   { width: 100%; height: 210px; }
+  .qv-info  { padding: 16px; }
+  .anime-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .form-grid  { grid-template-columns: 1fr; }
+  .form-grid input[name="title"],
+  .form-grid input[name="image"],
+  .submit-btn { grid-column: 1; }
+  .rating-modal { padding: 28px 20px; }
+  .rating-modal .star { font-size: 22px; }
 }

@@ -1,33 +1,74 @@
-/* CreateClub.css */
+/* ════════════════════════════════════════
+   CreateClub.css
+   (no import in the JS — add it yourself)
+════════════════════════════════════════ */
 
-.create-club-container {
-  padding: 2rem;
-  max-width: 500px;
-  margin: auto;
+.create-club {
+  padding: 36px 28px;
+  min-height: 100vh;
+  background: var(--bg);
+  max-width: 480px;
 }
 
-.create-club-container h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+.create-club h2 {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
 }
 
-.create-club-container input {
-  padding: 0.5rem;
+.create-club form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.create-club input[type="text"] {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
   width: 100%;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.create-club-container button {
-  padding: 0.5rem 1rem;
-  background-color: #4caf50;
-  color: white;
+.create-club input::placeholder { color: var(--text-muted); }
+
+.create-club input:focus {
+  border-color: rgba(74,158,255,0.5);
+  box-shadow: 0 0 0 3px rgba(74,158,255,0.1);
+}
+
+.create-club .error {
+  font-size: 12px;
+  font-weight: 700;
+  color: #e8302a;
+  margin: 0;
+}
+
+.create-club button[type="submit"] {
+  background: var(--red);
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
+  padding: 12px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 800;
   cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: opacity 0.15s, transform 0.1s;
 }
 
-.create-club-container button:hover {
-  background-color: #45a049;
-}
+.create-club button:disabled { opacity: 0.55; cursor: not-allowed; }
+.create-club button:not(:disabled):hover  { opacity: 0.88; }
+.create-club button:not(:disabled):active { transform: scale(0.98); }

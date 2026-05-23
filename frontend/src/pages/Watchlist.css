@@ -1,80 +1,128 @@
-/*frontend\src\pages\Watchlist.css*/
+/* ════════════════════════════════════════
+   Watchlist.css
+════════════════════════════════════════ */
 
 .watchlist-page {
-  padding: 2rem;
+  padding: 28px;
+  min-height: 100vh;
+  background: var(--bg);
 }
 
-/* Grid layout */
-.anime-grid {
+.watchlist-title {
+  font-family: var(--font-title);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin-bottom: 28px;
+}
+
+/* ── Section ── */
+.watch-section {
+  margin-bottom: 40px;
+}
+
+.watch-section h2 {
+  font-family: var(--font-title);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.watch-section > p {
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 12px 0;
+}
+
+/* ── Grid ── */
+.watch-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 18px;
 }
 
-/* Anime card */
-.anime-card {
-  background: #ffffff;
-  color: #fff;
-  border: 2px solid black;
-  border-radius: 10px;
-  padding: 1rem;
-  text-align: center;
-  min-width: 160px;
-  max-width: 200px;
-  box-shadow: 0 4px 12px rgb(17, 17, 17);
-}
-
-.anime-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-/* Remove button */
-.remove-btn {
-  margin-top: 0.5rem;
-  padding: 6px 10px;
-  background-color: crimson;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* Episode increment/decrement buttons */
-.episode-btn {
-  background: #444;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  font-size: 18px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.episode-btn:hover {
-  background-color: #666;
-}
-
-/* Modal styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.7);
+/* ── Card ── */
+.watch-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.modal {
-  background: #fff;
-  color: #000;
-  padding: 2rem;
-  border-radius: 8px;
-  max-width: 400px;
-  width: 90%;
+.watch-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.watch-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  background: var(--surface2);
+}
+
+.watch-info {
+  padding: 10px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.watch-info h3 {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.watch-info p {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-left: 2px solid var(--border);
+  padding-left: 7px;
+  margin: 0;
+}
+
+.watch-info p:last-of-type {
+  color: var(--accent);
+  border-left-color: rgba(232,160,32,0.35);
+}
+
+.remove-btn {
+  margin-top: 10px;
+  background: rgba(232,48,42,0.1);
+  color: #e8302a;
+  border: 1px solid rgba(232,48,42,0.25);
+  border-radius: 7px;
+  padding: 7px 12px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  width: 100%;
+}
+
+.remove-btn:hover  { background: rgba(232,48,42,0.2); }
+.remove-btn:active { transform: scale(0.97); }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .watchlist-page { padding: 16px; }
+  .watch-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .watch-card img { height: 160px; }
 }
