@@ -373,7 +373,7 @@ const Home = () => {
       ].join('\n');
 
       
-      const res = await fetch('http://localhost:5000/api/chat', {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
