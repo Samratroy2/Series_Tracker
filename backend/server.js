@@ -26,7 +26,7 @@ app.post("/api/chat", async (req, res) => {
     const { prompt } = req.body;
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-pro",
+      model: "gemini-flash-latest",
     });
 
     const result = await model.generateContent(prompt);
@@ -53,3 +53,15 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+
+
+
+
+
+
+
+
+
+
