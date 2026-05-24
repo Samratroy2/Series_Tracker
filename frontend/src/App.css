@@ -70,25 +70,28 @@ body {
 /* ════════════════════════════════════════
    MAIN CONTENT
 ════════════════════════════════════════ */
+
 .main-content {
   margin-left: 200px;
+
   flex: 1;
+
   min-height: 100vh;
+
   display: flex;
   flex-direction: column;
+
   position: relative;
+
   background: var(--bg);
+
   transition:
     margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     background 0.3s;
 
-  width: calc(100vw - 200px);
-
-  max-width: calc(100vw - 200px);
+  width: 100%;
 
   overflow-x: hidden;
-
-  box-sizing: border-box;
 }
 
 /* ── Theme toggle ── */
@@ -138,7 +141,10 @@ body {
 @media (max-width: 768px) {
   :root { --sidebar-w: 60px; }
 
-  .main-content { margin-left: 60px; }
+  .main-content { 
+    margin-left: 60px; 
+    width: 100%;
+  }
 
   .theme-toggle {
     top: 12px;
@@ -161,16 +167,8 @@ body {
 /* Sidebar collapsed → shrink margin */
 body:has(.sidebar.collapsed) .main-content {
   margin-left: 60px;
-
-  width: calc(100vw - 60px);
-
-  max-width: calc(100vw - 60px);
 }
 
 body:has(.sidebar.mobile) .main-content {
   margin-left: 60px;
-
-  width: calc(100vw - 60px);
-
-  max-width: calc(100vw - 60px);
 }

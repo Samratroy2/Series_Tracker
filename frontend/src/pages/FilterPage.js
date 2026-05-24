@@ -62,12 +62,36 @@ const FilterPage = () => {
   };
 
   const allGenres = [
-    ...new Set(
-      animeList
-        .map((a) => a.genre)
-        .filter(Boolean)
-    ),
-  ];
+  ...new Set(
+    animeList.flatMap((a) => {
+
+      // NEW ARRAY FORMAT
+      if (Array.isArray(a.genre)) {
+        return a.genre;
+      }
+
+      // OLD STRING FORMAT
+      if (typeof a.genre === 'string') {
+
+        // Handle merged words:
+        // CrimeDrama -> Crime Drama
+
+        const cleaned =
+          a.genre.replace(
+            /([a-z])([A-Z])/g,
+            '$1,$2'
+          );
+
+        return cleaned
+          .split(',')
+          .map((g) => g.trim())
+          .filter(Boolean);
+      }
+
+      return [];
+    })
+  ),
+];
 
   const allYears = [
     ...new Set(
@@ -89,9 +113,20 @@ const FilterPage = () => {
 
   const allLanguages = [
     ...new Set(
-      animeList
-        .map((a) => a.language)
-        .filter(Boolean)
+      animeList.flatMap((a) => {
+
+        // NEW ARRAY FORMAT
+        if (Array.isArray(a.language)) {
+          return a.language;
+        }
+
+        // OLD STRING FORMAT
+        if (typeof a.language === 'string') {
+          return [a.language];
+        }
+
+        return [];
+      })
     ),
   ];
 
@@ -102,14 +137,18 @@ const FilterPage = () => {
       (arr) => arr.length > 0
     );
 
-  const filteredAnime = isAnyFilterActive
-    ? animeList.filter((anime) => {
-        const matchesGenre =
-          selectedFilters.genre.length
-            ? selectedFilters.genre.includes(
+        const filteredAnime = isAnyFilterActive
+          ? animeList.filter((anime) => {
+              const matchesGenre =
+        selectedFilters.genre.length
+          ? Array.isArray(anime.genre)
+            ? anime.genre.some((g) =>
+                selectedFilters.genre.includes(g)
+              )
+            : selectedFilters.genre.includes(
                 anime.genre
               )
-            : true;
+          : true;
 
         const matchesYear =
           selectedFilters.year.length
@@ -127,9 +166,13 @@ const FilterPage = () => {
 
         const matchesLanguage =
           selectedFilters.language.length
-            ? selectedFilters.language.includes(
-                anime.language
-              )
+            ? Array.isArray(anime.language)
+              ? anime.language.some((l) =>
+                  selectedFilters.language.includes(l)
+                )
+              : selectedFilters.language.includes(
+                  anime.language
+                )
             : true;
 
         const matchesRating =
@@ -260,9 +303,18 @@ const FilterPage = () => {
                     </h4>
 
                     <p>
-                      {anime.genre} •{' '}
+                      {
+                        Array.isArray(anime.genre)
+                          ? anime.genre.join(', ')
+                          : anime.genre
+                      }
+                      {' • '}
                       {anime.year} •{' '}
-                      {anime.language}
+                      {
+                        Array.isArray(anime.language)
+                          ? anime.language.join(', ')
+                          : anime.language
+                      }
                     </p>
 
                     <p>

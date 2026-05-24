@@ -33,6 +33,71 @@ const Search = () => {
     useState(true);
 
   // =========================
+  // FORMAT GENRE
+  // =========================
+
+  const formatGenre =
+    (genre) => {
+
+      // NEW ARRAY FORMAT
+      if (
+        Array.isArray(
+          genre
+        )
+      ) {
+
+        return genre.join(
+          ', '
+        );
+      }
+
+      // OLD STRING FORMAT
+      if (
+        typeof genre ===
+        'string'
+      ) {
+
+        return genre.replace(
+          /([a-z])([A-Z])/g,
+          '$1, $2'
+        );
+      }
+
+      return 'Unknown';
+    };
+
+  // =========================
+  // FORMAT LANGUAGE
+  // =========================
+
+    const formatLanguage =
+    (language) => {
+
+      // NEW ARRAY FORMAT
+      if (
+        Array.isArray(
+          language
+        )
+      ) {
+
+        return language.join(
+          ', '
+        );
+      }
+
+      // OLD STRING FORMAT
+      if (
+        typeof language ===
+        'string'
+      ) {
+
+        return language;
+      }
+
+      return 'Unknown';
+    };
+
+  // =========================
   // FETCH ANIME FROM FIREBASE
   // =========================
 
@@ -99,31 +164,46 @@ const Search = () => {
           return false;
         }
 
+        const term =
+          searchTerm.toLowerCase();
+
+        // HANDLE OLD + NEW GENRE FORMAT
+        const genreText =
+          Array.isArray(
+            anime.genre
+          )
+            ? anime.genre.join(
+                ' '
+              )
+            : anime.genre || '';
+
         return (
 
           anime.title
             ?.toLowerCase()
-            .includes(
-              searchTerm.toLowerCase()
-            ) ||
+            .includes(term)
 
-          anime.genre
-            ?.toLowerCase()
-            .includes(
-              searchTerm.toLowerCase()
-            ) ||
+          ||
 
-          anime.language
-            ?.toLowerCase()
-            .includes(
-              searchTerm.toLowerCase()
-            ) ||
+          genreText
+            .toLowerCase()
+            .includes(term)
+
+          ||
+
+          (
+            Array.isArray(anime.language)
+              ? anime.language.join(' ')
+              : anime.language || ''
+          )
+            .toLowerCase()
+            .includes(term)
+
+          ||
 
           anime.type
             ?.toLowerCase()
-            .includes(
-              searchTerm.toLowerCase()
-            )
+            .includes(term)
         );
       }
     );
@@ -217,18 +297,25 @@ const Search = () => {
                           </h4>
 
                           <p>
+
                             {
-                              anime.genre
+                              formatGenre(
+                                anime.genre
+                              )
                             }
+
                             {' • '}
+
                             {
-                              anime.language ||
-                              'Unknown'
+                              formatLanguage(anime.language) 
                             }
+
                             {' • '}
+
                             {
                               anime.year
                             }
+
                           </p>
 
                           <p>
@@ -236,9 +323,11 @@ const Search = () => {
                             Rating:
                             {' '}
 
-                            {anime.rating ??
+                            {
+                              anime.rating ??
                               anime.score ??
-                              'N/A'}
+                              'N/A'
+                            }
 
                           </p>
 

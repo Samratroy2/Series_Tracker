@@ -53,6 +53,11 @@ const AddSeries = () => {
           .map((g) => g.trim())
           .filter(Boolean),
 
+        language: form.language
+          .split(',')
+          .map((l) => l.trim())
+          .filter(Boolean),
+          
         episodes: Number(form.episodes) || 0,
         score: Number(form.score) || 0,
         year: Number(form.year) || new Date().getFullYear(),
@@ -116,7 +121,7 @@ const AddSeries = () => {
           <input
             type="text"
             name="genre"
-            placeholder="genre"
+            placeholder="Crime, Mystery, Thriller"
             value={form.genre}
             onChange={handleChange}
           />

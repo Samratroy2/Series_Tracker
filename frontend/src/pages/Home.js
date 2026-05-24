@@ -12,6 +12,38 @@ import { useAuth } from '../contexts/AuthContext';
 
 const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
 
+const formatGenre = (genre) => {
+
+  if (Array.isArray(genre)) {
+    return genre.join(', ');
+  }
+
+  if (typeof genre === 'string') {
+    return genre.replace(
+      /([a-z])([A-Z])/g,
+      '$1, $2'
+    );
+  }
+
+  return 'Unknown';
+};
+
+const formatLanguage = (language) => {
+
+  if (Array.isArray(language)) {
+    return language.join(', ');
+  }
+
+  if (typeof language === 'string') {
+    return language.replace(
+      /([a-z])([A-Z])/g,
+      '$1, $2'
+    );
+  }
+
+  return 'Unknown';
+};
+
 // ─── Star Rating component ────────────────────────────────────────
 const StarRating = ({ value, onChange, readOnly = false }) => {
   const [hover, setHover] = useState(0);
@@ -66,7 +98,7 @@ const AnimeCard = ({ anime, onClick }) => (
     </div>
     <div className="sc-card__info">
       <p className="sc-card__title">{anime.title}</p>
-      <p className="sc-card__sub">{anime.genre || '—'} · {anime.year || '—'}</p>
+      <p className="sc-card__sub">{formatGenre(anime.genre)} · {anime.year || '—'}</p>
     </div>
   </div>
 );
@@ -291,7 +323,7 @@ const Home = () => {
         .map(a => (
           a.title +
           ' (type:'    + (a.type||'?') +
-          ', genre:'   + (a.genre||'?') +
+          ', genre:' + formatGenre(a.genre) +
           ', year:'    + (a.year||'?') +
           ', score:'   + (a.avgRating||a.score||'?') +
           ', watches:' + (a.watchCount||0) + ')'
@@ -390,7 +422,7 @@ const Home = () => {
             <span className="hero-banner__tag"># 1 Top Rated</span>
             <h2 className="hero-banner__title">{topRated[0].title}</h2>
             <p className="hero-banner__meta">
-              {topRated[0].genre} · {topRated[0].year} · ★ {topRated[0].score}
+              {formatGenre(topRated[0].genre)} · {topRated[0].year} · ★ {topRated[0].score}
             </p>
             <button className="hero-banner__btn"
               onClick={e => { e.stopPropagation(); setDetailAnime(topRated[0]); }}>
@@ -460,7 +492,7 @@ const Home = () => {
                   <h3 onClick={() => setDetailAnime(anime)}>{anime.title}</h3>
                   <p>Episodes: {anime.episodes}</p>
                   <p>Rating: {anime.score}</p>
-                  <p>Language: {anime.language}</p>
+                  <p>Language: {formatLanguage(anime.language)}</p>
 
                   {status === 'Watching' && watching && (
                     <div className="ep-progress-wrap">
@@ -547,11 +579,11 @@ const Home = () => {
 
                 <div className="qv-meta-grid">
                   {[
-                    ['Genre',    detailAnime.genre],
+                    ['Genre',    formatGenre(detailAnime.genre)],
                     ['Episodes', detailAnime.episodes],
                     ['Rating',   '★ ' + detailAnime.score],
                     ['Year',     detailAnime.year],
-                    ['Language', detailAnime.language],
+                    ['Language', formatLanguage(detailAnime.language)],
                   ].map(([label, val]) => val && (
                     <div key={label} className="qv-meta-item">
                       <span className="qv-meta-label">{label}</span>
