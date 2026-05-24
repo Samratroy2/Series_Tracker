@@ -383,10 +383,26 @@ const Home = () => {
         }),
       });
 
-      const data = await res.json();
+      const text = await res.text();
+
+      console.log("RAW RESPONSE:", text);
+
+      let data;
+
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        throw new Error("Backend did not return JSON");
+      }
+
       const raw = data.message || '[]';
-      const cleaned = raw.replace(/```json|```/g, '').trim();
-      const titles  = JSON.parse(cleaned);
+
+      const cleaned = raw
+        .replace(/```json/g, '')
+        .replace(/```/g, '')
+        .trim();
+
+      const titles = JSON.parse(cleaned);
       const recs    = titles
         .map(t => animeList.find(a => a.title === t))
         .filter(Boolean)
