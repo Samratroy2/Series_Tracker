@@ -48,9 +48,15 @@ const AddSeries = () => {
 
       const payload = {
         ...form,
+        genre: form.genre
+          .split(',')
+          .map((g) => g.trim())
+          .filter(Boolean),
+
         episodes: Number(form.episodes) || 0,
         score: Number(form.score) || 0,
         year: Number(form.year) || new Date().getFullYear(),
+        
         watchCount: 0,
         avgRating: Number(form.score) || 0,
         createdAt: Date.now(),
