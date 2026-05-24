@@ -58,7 +58,7 @@ const AddSeries = () => {
 
       await addDoc(collection(db, 'anime'), payload);
 
-      alert('Series added successfully');
+      alert('Your series added successfully');
 
       // Reset form
       setForm({
@@ -74,7 +74,7 @@ const AddSeries = () => {
 
     } catch (error) {
       console.error(error);
-      alert('Failed to add series');
+      alert('Failed to add your series');
     } finally {
       setLoading(false);
     }
@@ -84,7 +84,7 @@ const AddSeries = () => {
     <div className="add-series-page">
       <div className="modal-content">
 
-        <h2>Add Series</h2>
+        <h2>Add Your Series</h2>
 
         <form className="form-grid" onSubmit={handleSubmit}>
 

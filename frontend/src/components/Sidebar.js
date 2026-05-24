@@ -56,7 +56,7 @@ const Sidebar = () => {
     { name: 'Home', path: '/', icon: <Home size={20} />, title: 'Home' },
 
     {
-      name: 'Add Series',
+      name: 'Add Your Series',
       path: '/add-series',
       icon: <PlusCircle size={20} />,
       title: 'Add New Series',
