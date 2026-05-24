@@ -372,7 +372,7 @@ const Home = () => {
         'Example: ["Title A","Title B"]',
       ].join('\n');
 
-      
+      console.log(process.env.REACT_APP_API_URL);
       const res = await fetch(`${process.env.REACT_APP_API_URL}/api/chat`, {
         method: 'POST',
         headers: {
