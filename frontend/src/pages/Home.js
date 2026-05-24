@@ -82,17 +82,11 @@ const Home = () => {
   const [completedList,setCompletedList]= useState([]);
   const [droppedList,  setDroppedList]  = useState([]);
   const [planList,     setPlanList]     = useState([]);
-  const [showForm,     setShowForm]     = useState(false);
   const [detailAnime,  setDetailAnime]  = useState(null);
 
   // Rating modal state
   const [ratingModal,  setRatingModal]  = useState(null);  // anime object
   const [userRating,   setUserRating]   = useState(0);
-
-  const [newAnime, setNewAnime] = useState({
-    title: '', episodes: '', score: '', genre: '',
-    language: '', type: 'Anime', year: new Date().getFullYear(), image: '',
-  });
 
   // AI recs
   const [aiRecs,        setAiRecs]        = useState([]);
@@ -153,21 +147,16 @@ const Home = () => {
   };
 
   // ── Update anime stats in Firestore ─────────────────────────
-  // watchDelta: +1 when starting watch, -1 when dropped, 0 otherwise
-  // rating: number 1-10 or null
   const updateAnimeStats = async (animeId, watchDelta = 0, rating = null) => {
     try {
       const animeRef = doc(db, 'anime', animeId);
       const updates  = {};
 
-      // Watch/drop counter
       if (watchDelta !== 0) {
         updates.watchCount = increment(watchDelta);
       }
 
-      // User rating → store per-user + recalculate avg
       if (rating !== null && userId) {
-        // Read current ratings map first
         const snap = await getDoc(animeRef);
         const data = snap.data() || {};
         const ratings = { ...(data.userRatings || {}), [userId]: rating };
@@ -178,12 +167,11 @@ const Home = () => {
 
         updates.userRatings = ratings;
         updates.avgRating   = avg;
-        updates.score       = avg; // keep score in sync for AI context
+        updates.score       = avg;
       }
 
       await updateDoc(animeRef, updates);
 
-      // Update local animeList state
       setAnimeList(prev => prev.map(a => {
         if (a._id !== animeId) return a;
         const next = { ...a };
@@ -200,37 +188,28 @@ const Home = () => {
     const id            = anime._id;
     const currentStatus = getStatus(anime);
 
-    // Remove from every list first
     let newW = watchingList .filter(a => a._id !== id);
     let newC = completedList.filter(a => a._id !== id);
     let newD = droppedList  .filter(a => a._id !== id);
     let newP = planList     .filter(a => a._id !== id);
 
-    // ── watchCount delta ──────────────────────────────────────
-    // +1 when starting to watch (from any non-watching state)
-    // -1 when dropping (was watching)
-    //  0 for everything else
     let watchDelta = 0;
     if (newStatus === 'Watching' && currentStatus !== 'Watching') watchDelta = +1;
     if (newStatus === 'Dropped'  && currentStatus === 'Watching') watchDelta = -1;
-    // Removing from watching without dropping (toggle off) also -1
     if (newStatus === 'None'     && currentStatus === 'Watching') watchDelta = -1;
 
-    // ── Watching → restore episodesWatched if coming from Dropped ──
     if (newStatus === 'Watching') {
       const dropped = droppedList.find(a => a._id === id);
       const watched = dropped?.episodesWatched || 0;
       newW.push({ ...anime, episodesWatched: watched });
     }
 
-    // ── Dropped → episodesWatched - 1 ──
     if (newStatus === 'Dropped') {
       const watching = watchingList.find(a => a._id === id);
       const watched  = Math.max(0, (watching?.episodesWatched || 0) - 1);
       newD.push({ ...anime, episodesWatched: watched });
     }
 
-    // ── Completed → open rating modal ──
     if (newStatus === 'Completed') {
       const watching = watchingList.find(a => a._id === id);
       newC.push({
@@ -242,16 +221,13 @@ const Home = () => {
 
     if (newStatus === 'Plan to Watch') newP.push(anime);
 
-    // Update local state
     setWatchingList (newW);
     setCompletedList(newC);
     setDroppedList  (newD);
     setPlanList     (newP);
 
-    // Save user lists to Firestore
     await saveLists({ watching: newW, completed: newC, dropped: newD, planToWatch: newP });
 
-    // Update anime document: watchCount ±1
     if (watchDelta !== 0) {
       await updateAnimeStats(id, watchDelta, null);
     }
@@ -265,24 +241,19 @@ const Home = () => {
     }
     const id = ratingModal._id;
 
-    // 1. Store userRating on the completed list entry (user-side)
     const newC = completedList.map(a =>
       a._id === id ? { ...a, userRating } : a
     );
     setCompletedList(newC);
     await saveLists({ completed: newC });
 
-    // 2. Write to anime doc:
-    //    - userRatings[userId] = rating
-    //    - recalculate avgRating across all users
-    //    - update score to keep AI context fresh
     await updateAnimeStats(id, 0, userRating);
 
     setRatingModal(null);
     setUserRating(0);
   };
 
-  // ── Increment episodes watched (Watching page style) ─────────
+  // ── Increment episodes watched ────────────────────────────────
   const incrementEpisodes = async (anime) => {
     const id      = anime._id;
     const current = watchingList.find(a => a._id === id);
@@ -291,7 +262,6 @@ const Home = () => {
     const maxEp   = parseInt(anime.episodes) || 9999;
     const newCount= Math.min((current.episodesWatched || 0) + 1, maxEp);
 
-    // Auto-complete if reached last episode
     if (newCount >= maxEp) {
       await changeStatus(anime, 'Completed');
       return;
@@ -302,22 +272,6 @@ const Home = () => {
     );
     setWatchingList(newW);
     await saveLists({ watching: newW });
-  };
-
-  // ── Add anime ────────────────────────────────────────────────
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewAnime(prev => ({ ...prev, [name]: value }));
-  };
-
-  const addNewAnime = async () => {
-    if (!newAnime.title) return alert('Title required');
-    try {
-      const ref = await addDoc(collection(db, 'anime'), newAnime);
-      setAnimeList(prev => [...prev, { _id: ref.id, ...newAnime }]);
-      setNewAnime({ title:'',episodes:'',score:'',genre:'',language:'',type:'Anime',year:new Date().getFullYear(),image:'' });
-      setShowForm(false);
-    } catch (e) { console.error(e); }
   };
 
   // ── AI Recommendations ───────────────────────────────────────
@@ -331,7 +285,6 @@ const Home = () => {
         ...watchingList .map(a => a._id),
         ...droppedList  .map(a => a._id),
       ]);
-      // Sort by watchCount so popular titles appear first
       const library = animeList
         .filter(a => !doneIds.has(a._id))
         .sort((a, b) => (b.watchCount||0) - (a.watchCount||0))
@@ -372,37 +325,23 @@ const Home = () => {
         'Example: ["Title A","Title B"]',
       ].join('\n');
 
-      console.log(process.env.REACT_APP_API_URL);
       const res = await fetch(`${process.env.REACT_APP_API_URL}/api/chat`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
       });
 
       const text = await res.text();
-
-      console.log("RAW RESPONSE:", text);
-
       let data;
-
       try {
         data = JSON.parse(text);
       } catch (e) {
         throw new Error("Backend did not return JSON");
       }
 
-      const raw = data.message || '[]';
-
-      const cleaned = raw
-        .replace(/```json/g, '')
-        .replace(/```/g, '')
-        .trim();
-
-      const titles = JSON.parse(cleaned);
+      const raw     = data.message || '[]';
+      const cleaned = raw.replace(/```json/g, '').replace(/```/g, '').trim();
+      const titles  = JSON.parse(cleaned);
       const recs    = titles
         .map(t => animeList.find(a => a.title === t))
         .filter(Boolean)
@@ -426,10 +365,8 @@ const Home = () => {
   const continueW= watchingList .slice(0, 10);
   const planned  = planList     .slice(0, 8);
 
-  const qvStatus = detailAnime ? getStatus(detailAnime) : 'None';
-  const qvWatching = detailAnime
-    ? watchingList.find(a => a._id === detailAnime._id)
-    : null;
+  const qvStatus   = detailAnime ? getStatus(detailAnime) : 'None';
+  const qvWatching = detailAnime ? watchingList.find(a => a._id === detailAnime._id) : null;
 
   return (
     <div className={`home ${theme}`}>
@@ -442,9 +379,6 @@ const Home = () => {
           </h1>
           <p className="home-sub">What are you watching today?</p>
         </div>
-        <button className="toggle-form-btn" onClick={() => setShowForm(true)}>
-          + Add Series
-        </button>
       </div>
 
       {/* ── HERO BANNER ── */}
@@ -500,10 +434,10 @@ const Home = () => {
       {/* ── TOP RATED ── */}
       <Section title="Top Rated" badge="⭐ Highest Scores" items={topRated} onCard={setDetailAnime} />
 
-      {animes .length > 0 && <Section title="Anime Series"    badge="Anime"          items={animes}  onCard={setDetailAnime} />}
-      {serials.length > 0 && <Section title="Serials & Dramas" badge="Serial · Drama" items={serials} onCard={setDetailAnime} />}
-      {movies .length > 0 && <Section title="Movies"           badge="Film"           items={movies}  onCard={setDetailAnime} />}
-      {planned.length > 0 && <Section title="Your Plan to Watch" badge="Up Next"      items={planned} onCard={setDetailAnime} />}
+      {animes .length > 0 && <Section title="Anime Series"     badge="Anime"          items={animes}  onCard={setDetailAnime} />}
+      {serials.length > 0 && <Section title="Serials & Dramas" badge="Serial · Drama"  items={serials} onCard={setDetailAnime} />}
+      {movies .length > 0 && <Section title="Movies"           badge="Film"            items={movies}  onCard={setDetailAnime} />}
+      {planned.length > 0 && <Section title="Your Plan to Watch" badge="Up Next"       items={planned} onCard={setDetailAnime} />}
 
       {/* ── ALL TITLES GRID ── */}
       <section className="home-section">
@@ -528,7 +462,6 @@ const Home = () => {
                   <p>Rating: {anime.score}</p>
                   <p>Language: {anime.language}</p>
 
-                  {/* Episode progress bar if watching */}
                   {status === 'Watching' && watching && (
                     <div className="ep-progress-wrap">
                       <div className="ep-progress">
@@ -581,7 +514,6 @@ const Home = () => {
                     )}
                   </div>
 
-                  {/* Completed badge with user rating */}
                   {status === 'Completed' && (
                     <div className="completed-badge">
                       ✅ Completed
@@ -598,29 +530,6 @@ const Home = () => {
           })}
         </div>
       </section>
-
-      {/* ── ADD ANIME MODAL ── */}
-      {showForm && (
-        <div className="modal-overlay" onClick={() => setShowForm(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h2>Add Series</h2>
-            <div className="form-grid">
-              {['title','episodes','genre','score','language','image'].map(field => (
-                <input key={field} type="text" name={field} placeholder={field}
-                  value={newAnime[field]} onChange={handleInputChange} />
-              ))}
-              <select name="type" value={newAnime.type} onChange={handleInputChange}>
-                <option value="Anime">Anime</option>
-                <option value="Serial">Serial</option>
-                <option value="Movie">Movie</option>
-                <option value="Drama">Drama</option>
-              </select>
-              <input type="number" name="year" value={newAnime.year} onChange={handleInputChange} />
-              <button className="submit-btn" onClick={addNewAnime}>Save</button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ── QUICK-VIEW MODAL ── */}
       {detailAnime && (
@@ -651,20 +560,17 @@ const Home = () => {
                   ))}
                 </div>
 
-                {/* Episode progress in modal */}
                 {qvStatus === 'Watching' && qvWatching && (
                   <div className="qv-ep-row">
                     <span className="qv-ep-count">
                       {qvWatching.episodesWatched} / {detailAnime.episodes || '?'} episodes
                     </span>
-                    <button className="ep-btn"
-                      onClick={() => incrementEpisodes(detailAnime)}>
+                    <button className="ep-btn" onClick={() => incrementEpisodes(detailAnime)}>
                       +1 ep
                     </button>
                   </div>
                 )}
 
-                {/* User rating if completed */}
                 {qvStatus === 'Completed' && (
                   <div className="qv-user-rating">
                     <span className="qv-meta-label">Your Rating</span>

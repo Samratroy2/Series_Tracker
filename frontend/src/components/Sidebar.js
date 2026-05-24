@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import {
   Home,
+  PlusCircle,
   Eye,
   CheckCircle,
   PauseCircle,
@@ -53,6 +54,14 @@ const Sidebar = () => {
   const menuItems = [
     { name: 'Profile', path: '/profile', icon: <UserCircle size={20} />, title: 'Edit Profile' },
     { name: 'Home', path: '/', icon: <Home size={20} />, title: 'Home' },
+    { name: 'Search', path: '/search', icon: <Search size={20} />, title: 'Search Anime' },
+
+    {
+      name: 'Add Series',
+      path: '/add-series',
+      icon: <PlusCircle size={20} />,
+      title: 'Add New Series',
+    },
     { name: 'Watching', path: '/watchlist/watching', icon: <Eye size={20} />, title: 'Watching' },
     { name: 'Completed', path: '/watchlist/completed', icon: <CheckCircle size={20} />, title: 'Completed' },
     { name: 'On Hold', path: '/watchlist/on-hold', icon: <PauseCircle size={20} />, title: 'On Hold' },
@@ -61,16 +70,19 @@ const Sidebar = () => {
     { name: 'Clubs', path: '/clubs', icon: <Users size={20} />, title: 'Clubs' },
     { name: 'Search', path: '/search', icon: <Search size={20} />, title: 'Search Anime' },
     { name: 'Filter', path: '/filter?filter=true', icon: <Filter size={20} />, title: 'Filter by Genre' },
-    ...(user?.role === 'admin'
-    ? [
-        {
-          name: 'Admin Panel',
-          path: '/admin',
-          icon: <Shield size={20} />,
-          title: 'Admin Panel',
-        },
-      ]
-    : []),
+    
+
+    { name: 'Filter', path: '/filter?filter=true', icon: <Filter size={20} />, title: 'Filter by Genre' },
+      ...(user?.role === 'admin'
+      ? [
+          {
+            name: 'Admin Panel',
+            path: '/admin',
+            icon: <Shield size={20} />,
+            title: 'Admin Panel',
+          },
+        ]
+      : []),
   ];
 
   return (

@@ -4,6 +4,14 @@
    No class = light (default darkMode=false)
 ════════════════════════════════════════ */
 
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Nunito:wght@300;400;600;700;800&display=swap');
 
 /* ── LIGHT MODE (default) ── */
@@ -62,16 +70,25 @@ body {
 /* ════════════════════════════════════════
    MAIN CONTENT
 ════════════════════════════════════════ */
-
 .main-content {
-  margin-left: var(--sidebar-w);
+  margin-left: 200px;
   flex: 1;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
   background: var(--bg);
-  transition: background 0.3s;
+  transition:
+    margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s;
+
+  width: calc(100vw - 200px);
+
+  max-width: calc(100vw - 200px);
+
+  overflow-x: hidden;
+
+  box-sizing: border-box;
 }
 
 /* ── Theme toggle ── */
@@ -144,9 +161,16 @@ body {
 /* Sidebar collapsed → shrink margin */
 body:has(.sidebar.collapsed) .main-content {
   margin-left: 60px;
+
+  width: calc(100vw - 60px);
+
+  max-width: calc(100vw - 60px);
 }
 
-/* Mobile sidebar → same as collapsed */
 body:has(.sidebar.mobile) .main-content {
   margin-left: 60px;
+
+  width: calc(100vw - 60px);
+
+  max-width: calc(100vw - 60px);
 }

@@ -12,7 +12,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import VerifyOtp from './pages/VerifyOtp';
 import ResetPassword from './pages/ResetPassword';
 import FilterPage from './pages/FilterPage';
-
+import AddSeries from './pages/AddSeries';
 import ProfilePage from './pages/ProfilePage';
 import Home from './pages/Home';
 import Watchlist from './pages/Watchlist';
@@ -89,6 +89,7 @@ const AppLayout = () => {
               </PrivateRoute>
             }
           />
+          <Route path="/add-series" element={<AddSeries />} />
           <Route path="/anime/:id" element={isAuthenticated ? <AnimeDetails /> : <Navigate to="/login" />} />
           <Route path="/watchlist" element={isAuthenticated ? <Watchlist /> : <Navigate to="/login" />} />
           <Route path="/watchlist/watching" element={isAuthenticated ? <Watching /> : <Navigate to="/login" />} />
