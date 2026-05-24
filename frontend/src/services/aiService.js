@@ -10,7 +10,12 @@ export const getAIRecommendations = async (watchHistory = []) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        watchHistory,
+        prompt: `
+Recommend anime, movies, or series similar to:
+${watchHistory.join(", ")}
+
+Return ONLY a JSON array of titles.
+`,
       }),
     });
 
@@ -21,6 +26,7 @@ export const getAIRecommendations = async (watchHistory = []) => {
     const data = await response.json();
 
     return data;
+
   } catch (error) {
     console.error("AI recommendations error:", error);
 
