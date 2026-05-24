@@ -36,7 +36,7 @@ const Register = () => {
       }
 
       toast.success(
-        `🎉 Welcome, ${name}! Registration successful!`
+        `Welcome, ${name}! Registration successful!`
       );
 
       setTimeout(() => navigate('/'), 1500);

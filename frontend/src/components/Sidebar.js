@@ -54,7 +54,6 @@ const Sidebar = () => {
   const menuItems = [
     { name: 'Profile', path: '/profile', icon: <UserCircle size={20} />, title: 'Edit Profile' },
     { name: 'Home', path: '/', icon: <Home size={20} />, title: 'Home' },
-    { name: 'Search', path: '/search', icon: <Search size={20} />, title: 'Search Anime' },
 
     {
       name: 'Add Series',
