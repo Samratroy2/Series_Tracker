@@ -139,6 +139,7 @@
   border-color: rgba(232,48,42,0.25);
 }
 
+
 .completed-card-buttons button:hover  { opacity: 0.8; }
 .completed-card-buttons button:active { transform: scale(0.96); }
 
@@ -146,4 +147,61 @@
   .completed-container { padding: 16px; }
   .completed-list { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .completed-card img { height: 160px; }
+}
+
+
+
+/* Rating row container */
+.rating-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* Common button styles */
+.rate-btn,
+.rerate-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Edit rating button */
+.rerate-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #2d2d2d;
+  color: #fff;
+
+  border: 1px solid #444;
+  border-radius: 8px;
+
+  padding: 8px 14px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.rerate-btn:hover {
+  background: #3d3d3d;
+  border-color: #666;
+  transform: translateY(-2px);
+}
+
+.rerate-btn:active {
+  transform: scale(0.97);
 }

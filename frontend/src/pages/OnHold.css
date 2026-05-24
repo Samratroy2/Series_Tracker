@@ -2,144 +2,69 @@
    OnHold.css
 ════════════════════════════════════════ */
 
-.onhold-container {
-  padding: 28px;
-  min-height: 100vh;
-  background: var(--bg);
-}
+.onhold-container { padding: 28px; min-height: 100vh; background: var(--bg); }
 
 .onhold-container h2 {
-  font-family: var(--font-title);
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--text);
-  margin-bottom: 20px;
+  font-family: var(--font-title); font-size: 20px; font-weight: 600;
+  letter-spacing: 0.08em; color: var(--text); margin: 0 0 16px;
 }
 
-.onhold-container > p {
-  color: var(--text-muted);
-  font-size: 14px;
-  margin-top: 40px;
-  text-align: center;
-}
+.empty-msg { color: var(--text-muted); font-size: 14px; margin-top: 40px; text-align: center; }
 
 .remove-all-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(232,48,42,0.12);
-  color: var(--red);
-  border: 1px solid rgba(232,48,42,0.28);
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-bottom: 24px;
-  transition: background 0.15s, transform 0.1s;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(232,48,42,0.12); color: var(--red);
+  border: 1px solid rgba(232,48,42,0.28); border-radius: 8px;
+  padding: 8px 16px; font-family: var(--font-body);
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  margin-bottom: 24px; transition: background 0.15s, transform 0.1s;
 }
-
 .remove-all-btn:hover  { background: rgba(232,48,42,0.2); }
 .remove-all-btn:active { transform: scale(0.97); }
 
-/* ── Grid ── */
 .onhold-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
 }
 
-/* ── Card ── */
 .onhold-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--accent);
-  border-radius: 14px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  background: var(--surface); border: 1px solid var(--border);
+  border-top: 3px solid var(--accent); border-radius: 14px;
+  overflow: hidden; display: flex; flex-direction: column;
   transition: transform 0.2s, box-shadow 0.2s;
 }
-
-.onhold-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.22);
-}
+.onhold-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.22); }
 
 .onhold-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  display: block;
-  background: var(--surface2);
+  width: 100%; height: 200px; object-fit: cover; object-position: center top;
+  display: block; background: var(--surface2);
 }
 
-.onhold-card-info {
-  padding: 10px 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
-}
+.onhold-card-info { padding: 10px 12px 13px; display: flex; flex-direction: column; gap: 5px; flex: 1; }
 
 .onhold-card-info h4 {
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 4px;
+  font-size: 13px; font-weight: 800; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;
 }
 
-.onhold-card-info p {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-weight: 600;
-  border-left: 2px solid rgba(232,160,32,0.35);
-  padding-left: 7px;
-  color: var(--accent);
-  margin: 0 0 8px;
-}
+/* Progress bar */
+.oh-progress-track { height: 4px; background: var(--surface2); border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+.oh-progress-bar   { height: 100%; background: linear-gradient(90deg, var(--accent), #e87020); border-radius: 4px; transition: width 0.4s ease; min-width: 3px; }
 
-/* ── Buttons ── */
-.onhold-card-buttons {
-  display: flex;
-  gap: 6px;
-  margin-top: 6px;
-}
+.ep-info { font-size: 11px; font-weight: 600; color: var(--accent); border-left: 2px solid rgba(232,160,32,0.35); padding-left: 7px; margin: 0; }
+
+.onhold-card-buttons { display: flex; gap: 6px; margin-top: 4px; }
 
 .onhold-card-buttons button {
-  flex: 1;
-  border-radius: 7px;
-  border: 1px solid var(--border);
-  padding: 7px 4px;
-  font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  background: var(--surface2);
-  color: var(--text-muted);
+  flex: 1; border-radius: 7px; border: 1px solid var(--border);
+  padding: 7px 4px; font-family: var(--font-body); font-size: 10px;
+  font-weight: 700; cursor: pointer; background: var(--surface2); color: var(--text-muted);
   transition: opacity 0.15s, transform 0.1s;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;
 }
-
-.onhold-card-buttons button:first-child {
-  background: rgba(74,158,255,0.12);
-  color: #4a9eff;
-  border-color: rgba(74,158,255,0.28);
-}
-
-.onhold-card-buttons button:last-child {
-  background: rgba(232,48,42,0.1);
-  color: #e8302a;
-  border-color: rgba(232,48,42,0.25);
-}
-
+.onhold-card-buttons button:first-child { background: rgba(74,158,255,0.12); color: #4a9eff; border-color: rgba(74,158,255,0.28); }
+.onhold-card-buttons button:last-child  { background: rgba(232,48,42,0.1); color: #e8302a; border-color: rgba(232,48,42,0.25); }
 .onhold-card-buttons button:hover  { opacity: 0.8; }
 .onhold-card-buttons button:active { transform: scale(0.96); }
 
